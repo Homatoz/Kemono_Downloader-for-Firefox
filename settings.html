@@ -1,0 +1,79 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="settings.css">
+  <script src="settings.js" defer></script>
+</head>
+<body>
+  <p class="main">다운로드 옵션</p>
+  <div class="sub">
+    <label for="txt">
+    <input type="checkbox" id="txt" name="txt" >
+    텍스트 포함 여부</label><br>
+    <label for ="img">
+    <input type="checkbox" id="img" name="img">
+    이미지 다운로드 여부</label><br>
+    <label for="attr">
+    <input type="checkbox" id="attr" name="attr">
+    첨부 파일 다운로드 여부</label><br>
+  </div>
+
+  <br>
+  <p class="main">텍스트 파일 이름 설정</p>
+  <input type="text" id="textname" size="60">
+
+  <p class="main">리네임 매크로 (본문문)</p>
+  <input type="text" id="macro" size="60">
+
+  <p class="main">리네임 매크로 (사진)</p>
+  <input type="text" id="macro2" size="60">
+
+  <p class="main">리네임 매크로 (첨부파일)</p>
+  <input type="text" id="macro3"  size="60">
+
+  <p>
+    <button id="save">Save</button>
+    <button id="reload">Reload</button>
+    <button id="reset">Reset</button>
+    Reload와 Reset은 Save를 함으로써 적용됩니다.<br>
+  </p>
+  <table class="macrolist">
+    <tr class="list-t">
+      <th>Macro</th> <th>Description</th>
+    </tr>
+    <tr>
+      <td>$flatformName$</td> <td>플랫폼의 이름</td>
+    </tr>
+    <tr>
+      <td>$userID$</td> <td>User의 이름</td>
+    </tr>
+    <tr>
+      <td>$Title$</td> <td>게시글 제목</td>
+    </tr>
+    <tr>
+      <td>$PageID$</td> <td>PageID</td>
+    </tr>
+    <tr>
+      <td>$DiffCount$</td> <td>이미지 총 개수</td>
+    </tr>
+    <tr>
+      <td>$Diff$</td> <td>이미지 번호</td>
+    </tr> 
+    <tr>
+      <td>$AttrName$</td> <td>첨부파일의 이름</td>
+    </tr> 
+    <tr>
+      <td>$YYYY$ $YY$ $MM$ $DD$ $hh$ $mm$</td> <td>공개 연월일시분</td>
+    </tr> 
+    <tr>
+      <td>$YYYY28$ $YY28$ $MM28$ $DD28$ $hh28$</td> <td>공개 연월일시분 (28시간제)</td>
+    </tr> 
+    <tr>
+      <td>$NYYYY$ $NYY$ $NMM$ $NDD$ $Nhh$ $Nmm$</td> <td></td>
+    </tr> 
+    <tr>
+      <td>$NYYYY28$ $NYY28$ $NMM28$ $NDD28$ $Nhh28$</td> <td>현재 연월일시분 (28시간제)</td>
+    </tr> 
+  </table>
+  </body>
+</html>
