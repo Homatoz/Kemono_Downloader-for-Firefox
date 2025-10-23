@@ -5,8 +5,8 @@ chrome.contextMenus.create({
   type: "normal",
   contexts: ["page"],
   documentUrlPatterns: [
-    "https://kemono.su/*/post/*",
-    "https://kemono.su/*/post/*",
+    "https://kemono.cr/*/post/*",
+    "https://kemono.cr/*/post/*",
   ],
   /*,
     'onclick' : function(info){

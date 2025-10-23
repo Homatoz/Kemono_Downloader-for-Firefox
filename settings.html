@@ -5,74 +5,78 @@
   <script src="settings.js" defer></script>
 </head>
 <body>
-  <p class="main">다운로드 옵션</p>
+  <p class="main" data-l10n-id="options_download_options">Download Options</p>
   <div class="sub">
     <label for="txt">
-    <input type="checkbox" id="txt" name="txt" >
-    텍스트 포함 여부</label><br>
+      <input type="checkbox" id="txt" name="txt" >
+      <span data-l10n-id="options_include_text">Include text</span>
+    </label><br>
     <label for ="img">
-    <input type="checkbox" id="img" name="img">
-    이미지 다운로드 여부</label><br>
+      <input type="checkbox" id="img" name="img">
+      <span data-l10n-id="options_download_images">Download images</span>
+    </label><br>
     <label for="attr">
-    <input type="checkbox" id="attr" name="attr">
-    첨부 파일 다운로드 여부</label><br>
+      <input type="checkbox" id="attr" name="attr">
+      <span data-l10n-id="options_download_attachments">Download attachments</span>
+    </label><br>
   </div>
 
   <br>
-  <p class="main">텍스트 파일 이름 설정</p>
+  <p class="main" data-l10n-id="options_text_filename">Text File Name Settings</p>
   <input type="text" id="textname" size="60">
 
-  <p class="main">리네임 매크로 (본문문)</p>
+  <p class="main" data-l10n-id="options_macro_body">Rename Macro (Body)</p>
   <input type="text" id="macro" size="60">
 
-  <p class="main">리네임 매크로 (사진)</p>
+  <p class="main" data-l10n-id="options_macro_image">Rename Macro (Image)</p>
   <input type="text" id="macro2" size="60">
 
-  <p class="main">리네임 매크로 (첨부파일)</p>
+  <p class="main" data-l10n-id="options_macro_attachment">Rename Macro (Attachment)</p>
   <input type="text" id="macro3"  size="60">
 
   <p>
-    <button id="save">Save</button>
-    <button id="reload">Reload</button>
-    <button id="reset">Reset</button>
-    Reload와 Reset은 Save를 함으로써 적용됩니다.<br>
+    <button id="save" data-l10n-id="options_save_button">Save</button>
+    <button id="reload" data-l10n-id="options_reload_button">Reload</button>
+    <button id="reset" data-l10n-id="options_reset_button">Reset</button>
+    <br>
+    <span data-l10n-id="options_save_notice">All changes will be applied by clicking Save.</span><br>
   </p>
   <table class="macrolist">
     <tr class="list-t">
-      <th>Macro</th> <th>Description</th>
+      <th data-l10n-id="macro_table_header_macro">Macro</th> <th data-l10n-id="macro_table_header_description">Description</th>
     </tr>
     <tr>
-      <td>$flatformName$</td> <td>플랫폼의 이름</td>
+      <td>$flatformName$</td> <td data-l10n-id="macro_desc_platform">Name of the platform</td>
     </tr>
     <tr>
-      <td>$userID$</td> <td>User의 이름</td>
+      <td>$userID$</td> <td data-l10n-id="macro_desc_user">Name of the user</td>
     </tr>
     <tr>
-      <td>$Title$</td> <td>게시글 제목</td>
+      <td>$Title$</td> <td data-l10n-id="macro_desc_title">Post title</td>
     </tr>
     <tr>
       <td>$PageID$</td> <td>PageID</td>
     </tr>
     <tr>
-      <td>$DiffCount$</td> <td>이미지 총 개수</td>
+      <td>$DiffCount$</td> <td data-l10n-id="macro_desc_img_total">Total number of images</td>
     </tr>
     <tr>
-      <td>$Diff$</td> <td>이미지 번호</td>
+      <td>$Diff$</td> <td data-l10n-id="macro_desc_img_number">Image number</td>
     </tr> 
     <tr>
-      <td>$AttrName$</td> <td>첨부파일의 이름</td>
+      <td>$AttrName$</td> <td data-l10n-id="macro_desc_attach_name">Name of the attachment</td>
     </tr> 
     <tr>
-      <td>$YYYY$ $YY$ $MM$ $DD$ $hh$ $mm$</td> <td>공개 연월일시분</td>
+      <td>$YYYY$ $YY$ ...</td> <td data-l10n-id="macro_desc_date">Published Year/Month/Day/Hour/Minute</td>
     </tr> 
     <tr>
-      <td>$YYYY28$ $YY28$ $MM28$ $DD28$ $hh28$</td> <td>공개 연월일시분 (28시간제)</td>
+      <td>$YYYY28$ $YY28$ ...</td> <td data-l10n-id="macro_desc_date28">Published Year/Month/Day/Hour/Minute (28h format)</td>
     </tr> 
     <tr>
-      <td>$NYYYY$ $NYY$ $NMM$ $NDD$ $Nhh$ $Nmm$</td> <td></td>
+      <td>$NYYYY$ $NYY$ ...</td> <td data-l10n-id="macro_desc_now">Current Year/Month/Day/Hour/Minute</td>
     </tr> 
     <tr>
-      <td>$NYYYY28$ $NYY28$ $NMM28$ $NDD28$ $Nhh28$</td> <td>현재 연월일시분 (28시간제)</td>
+      <td>$NYYYY28$ $NYY28$ ...</td> <td data-l10n-id="macro_desc_now28">Current Year/Month/Day/Hour/Minute (28h format)</td>
     </tr> 
   </table>
   </body>

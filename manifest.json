@@ -1,8 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Kemono_Downloader",
-  "description": "kemono.su 게시글에서 우클릭하여 저장",
-  "version": "0.0.1",
+  "description": "kemono.cr 게시글에서 우클릭하여 저장",
+  "version": "1.1.1",
+  "default_locale": "en",
   "author": "AwerQxcv",
   "icons": {
     "48": "icon_48.png",
@@ -11,7 +12,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://kemono.su/*"],
+      "matches": ["https://kemono.cr/*"],
       "js": ["Kemono_Downloader.js"]
     }
   ],
@@ -23,11 +24,11 @@
     "storage",
     "tabs",
     "contextMenus",
-    "*://kemono.su/*"
+    "*://kemono.cr/*"
   ],
   "web_accessible_resources": ["icon.svg"],
   "options_ui": {
     "page": "settings.html"
   },
-  "homepage_url": "https://google.com/"
+  "homepage_url": "https://github.com/AwerQxcv/Kemono_Downloader-for-Firefox"
 }
