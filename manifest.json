@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Kemono_Downloader",
   "description": "kemono.su 게시글에서 우클릭하여 저장",
-  "version": "0.0.1",
+  "version": "1.0.3",
   "author": "AwerQxcv",
   "icons": {
     "48": "icon_48.png",

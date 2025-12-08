@@ -71,22 +71,30 @@ function getimgURL(getnum) {
 
 function getAttURL(getnum) {
   a = document.querySelectorAll(".post__attachment")[getnum].querySelector("a").getAttribute("href");
-  
+  if (a == null) {
+  a = document.querySelectorAll(".post__attachments")[getnum].querySelector("a").getAttribute("href");
+  }
+  console.log(`dlimg: Found ${a} files. Starting download requests...`);
+
   return a;
 }
 
 function getText() {
-  let text = document.querySelector(".post__content").querySelector("p");
-  if (text == null) {
-    text = document.querySelector(".post__content").querySelector("pre").innerText
-  } else {
-    text = document.querySelector(".post__content").querySelector("p").innerText
+  try {
+    text = document.querySelector(".post__content").querySelector("p");
+    return text;
+  } catch (error) {
+    try {
+      text = document.querySelector(".post__content").querySelector("pre").innerText;
+      return text;
+    } catch (err) {
+      return 0;
+    }
   }
-  return text;
 }
 
 function dlText() {
-  if (getText() != "") {
+  if (getText() != 0) {
     const blob2 = new Blob([getText()], { type: "text/plain" });
     filename = getTextname(textname) + ".txt";
 
@@ -177,7 +185,7 @@ async function dlAttr() {
       console.log("dlAttr: 원본 파일 이름 확인:", file_2);
       // *** 매크로 시스템을 사용하여 전체 경로 생성 ***
       // diff 유형(-2, 첨부 파일)과 원본 파일 이름을 전달합니다.
-      const full_path_filename = getAttFilename(file_2);
+      full_path_filename = getAttFilename(file_2);
 
       // 올바른 경로/파일 이름으로 다운로드 요청 보내기
       // 요청 간 지연을 위해 await new Promise 사용
@@ -389,11 +397,14 @@ async function main(str) {
     console.log("Enabled SaveText");
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
   }
+
   if (str.saveattr == true) {
     console.log("Enabled SaveAttributes");
     console.log("Starting attribute downloads...");
     await dlAttr(); // dlAttr의 모든 요청 전송이 끝날 때까지 대기
     console.log("Finished requesting attribute downloads.");
+  } else {
+    console.log("for debug");
   }
 }
 
