@@ -370,23 +370,6 @@ function getDateNow(query, custom) {
   return replaced[query].padStart(2, "0");
 }
 
-/*
-async function main(str) {
-  globalThis.macro = str.macro;
-  globalThis.macro2 = str.macro2;
-  globalThis.macro3 = str.macro3;
-  if (str.savetext == true) {
-    //console.log("Enabled SaveText");
-    dlText();
-  }
-  if (str.saveattr == true) {
-    //console.log("Enabled SaveAttributes");
-    dlAttr();
-  }
-
-  dlimg();
-}
-*/
 
 async function main(str) {
   globalThis.textname = str.textname;
