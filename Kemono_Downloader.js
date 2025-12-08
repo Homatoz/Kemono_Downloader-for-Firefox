@@ -77,7 +77,7 @@ function getAttURL(getnum) {
   if (a == null) {
   a = document.querySelectorAll(".post__attachments")[getnum].querySelector("a").getAttribute("href");
   }
-  // //console.log(`dlimg: Found ${a} files. Starting download requests...`);
+  //console.log(`dlimg: Found ${a} files. Starting download requests...`);
 
   return a;
 }
@@ -411,8 +411,6 @@ async function main(str) {
     //console.log("Starting attribute downloads...");
     await dlAttr(); // dlAttr의 모든 요청 전송이 끝날 때까지 대기
     //console.log("Finished requesting attribute downloads.");
-  } else {
-    //console.log("for debug");
   }
 }
 
