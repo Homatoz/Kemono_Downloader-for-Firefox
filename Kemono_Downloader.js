@@ -4,11 +4,11 @@
 // Get Page Information
 
 function getfanboxID() {
-  if (location.hostname == "kemono.su") {
+  if (location.hostname == "kemono.cr") {
     s = location.pathname.match(/(?<=user)(.*)(?=\/post)/); //@以降を取得
     return s[0];
   } else {
-    return location.hostname.replace("kemono.su", ""); //こっちはサブドメインを取得すればOK
+    return location.hostname.replace("kemono.cr", ""); //こっちはサブドメインを取得すればOK
   }
 }
 
@@ -38,17 +38,20 @@ function getflatformName() {
 
 function getuserID() {
   userID = document.querySelector("a.fancy-link:nth-child(1)").textContent;
-  return repUserID(userID);
+  userID_true = userID.trim();
+  return repUserID(userID_true);
 }
 
 function getPageID() {
   pageID = location.pathname.match(/(?<=\/post\/)[0-Z]*/);
-  return pageID;
+  pageID_true = pageID[0].trim();
+  return pageID_true;
 }
 
 function getTitle() {
   title = document.querySelector(".post__title > span:nth-child(1)").textContent;
-  return repTitlename(title);
+  title_true = title.trim();
+  return repTitlename(title_true);
 }
 
 function getDiff() {
@@ -74,7 +77,7 @@ function getAttURL(getnum) {
   if (a == null) {
   a = document.querySelectorAll(".post__attachments")[getnum].querySelector("a").getAttribute("href");
   }
-  console.log(`dlimg: Found ${a} files. Starting download requests...`);
+  //console.log(`dlimg: Found ${a} files. Starting download requests...`);
 
   return a;
 }
@@ -99,9 +102,9 @@ function dlText() {
     filename = getTextname(textname) + ".txt";
 
     if (isChrominum() == true) {
-      console.log("SetFlag: Chrominum");
+      //console.log("SetFlag: Chrominum");
       const blob3 = URL.createObjectURL(blob2);
-      console.log(blob3);
+      //console.log(blob3);
       getFile("download", blob3, filename);
       //URL.revokeObjectURL(blob3)
     } else {
@@ -118,9 +121,9 @@ async function dlimg() {
   diff = getDiff();
   for (var num = 0; num < diff; num++) {
     url = getimgURL(num);
-    console.log(url);
+    //console.log(url);
     filename = getFilename(num) + "." + getExttype(url);
-    console.log(filename);
+    //console.log(filename);
     await new Promise((s) => {
       getFile("download", url, filename);
       setTimeout(s, 150);
@@ -131,18 +134,18 @@ async function dlimg() {
 
 async function dlimg() {
   diff = getDiff();
-  console.log(`dlimg: Found ${diff} images. Starting download requests...`);
+  //console.log(`dlimg: Found ${diff} images. Starting download requests...`);
   for (var num = 0; num < diff; num++) {
     try { // 오류 발생 시 루프 중단을 막기 위해 try-catch 추가
-      console.log(`dlimg: Processing image ${num + 1}/${diff}`);
+      //console.log(`dlimg: Processing image ${num + 1}/${diff}`);
       const url = getimgURL(num);
-      console.log("dlimg: URL:", url);
+      //console.log("dlimg: URL:", url);
       const filename = getFilename(num) + "." + getExttype(url);
-      console.log("dlimg: Filename:", filename);
-      console.log("dlimg: Sending download request for", filename);
+      //console.log("dlimg: Filename:", filename);
+      //console.log("dlimg: Sending download request for", filename);
       await new Promise((resolve, reject) => { // resolve/reject 추가
         getFile("download", url, filename);
-          console.log(`dlimg: Request sent for image ${num + 1}. Continuing...`);
+          //console.log(`dlimg: Request sent for image ${num + 1}. Continuing...`);
           resolve(); // 성공 시 resolve 호출
         }, 100); // 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
     } catch (error) {
@@ -150,7 +153,7 @@ async function dlimg() {
       // 오류 발생 시 다음 이미지로 계속 진행할지 결정
     }
   }
-  console.log("dlimg: Finished sending all image download requests.");
+  //console.log("dlimg: Finished sending all image download requests.");
 }
 
 /*
@@ -158,9 +161,9 @@ async function dlAttr() {
   diff = getAttDiff();
   for (var num = 0; num < diff; num++) {
     url_2 = getAttURL(num);
-    console.log(url_2);
+    //console.log(url_2);
     filename_2 = document.querySelectorAll(".post__attachment")[num].querySelector("a").getAttribute("download")
-    console.log(filename_2);
+    //console.log(filename_2);
     await new Promise((s) => {
       getAttFile("download", url_2, filename_2);
       setTimeout(s, 150);
@@ -173,7 +176,7 @@ async function dlAttr() {
 async function dlAttr() {
   const attachments = document.querySelectorAll(".post__attachment"); // 요소를 한 번만 선택
   const diff = attachments.length; // 선택된 요소의 길이 사용
-  console.log(`dlAttr: ${diff}개의 첨부 파일을 찾았습니다. 다운로드 요청을 시작합니다...`);
+  //console.log(`dlAttr: ${diff}개의 첨부 파일을 찾았습니다. 다운로드 요청을 시작합니다...`);
 
   for (var num = 0; num < diff; num++) {
     try { // 이전에 추가된 오류 처리는 좋습니다
@@ -181,8 +184,13 @@ async function dlAttr() {
 
       const url_2 = attachmentElement.getAttribute("href"); // URL 직접 가져오기
       const file_2 = attachmentElement.getAttribute("download"); // 파일 이름 가져오기
+      //console.log("dlAttr: URL 및 파일 이름 확인 : ", url_2, file_2);
+      if (!url_2 || !file_2) {
+        console.warn(`dlAttr: 첨부 파일 ${num + 1}의 URL 또는 파일 이름을 찾을 수 없습니다. 건너뜁니다.`);
+        continue; // URL이나 파일 이름이 없으면 다음 반복으로 건너뜁니다
+      }
 
-      console.log("dlAttr: 원본 파일 이름 확인:", file_2);
+      //console.log("dlAttr: 원본 파일 이름 확인:", file_2);
       // *** 매크로 시스템을 사용하여 전체 경로 생성 ***
       // diff 유형(-2, 첨부 파일)과 원본 파일 이름을 전달합니다.
       full_path_filename = getAttFilename(file_2);
@@ -191,15 +199,15 @@ async function dlAttr() {
       // 요청 간 지연을 위해 await new Promise 사용
       await new Promise((resolve) => {
           getAttFile("download", url_2, full_path_filename);
-          console.log(`dlAttr: 다운로드 요청 전송 완료: ${full_path_filename}`);
+          //console.log(`dlAttr: 다운로드 요청 전송 완료: ${full_path_filename}`);
           setTimeout(resolve, 150); // 다음 반복 시작 전 150ms 대기
       });
+    //console.log("dlAttr: 모든 첨부 파일 다운로드 요청 전송 완료.");
 
     } catch (error) {
       console.error(`dlAttr: 첨부 파일 ${num + 1} 처리 중 오류 발생:`, error);
     }
   }
-   console.log("dlAttr: 모든 첨부 파일 다운로드 요청 전송 완료.");
 }
 
 // getFilename 함수에 diff == -2 케이스가 이미 macro3를 사용하게 되어 있다면 위 코드에서 getFilename(-2) 사용 가능
@@ -292,7 +300,7 @@ function getTextname(name) {
   let query;
   query = getFilename2(macro);
   query = query.replaceAll("$TextName$", name);
-  console.log("getTextname: 처리된 파일 이름:", query);
+  //console.log("getTextname: 처리된 파일 이름:", query);
   return query; // 최종 처리된 경로/파일 이름 반환
 }
 
@@ -301,7 +309,7 @@ function getAttFilename(name) {
   query = getFilename2(macro3); // macro3의 기본 플레이스홀더 처리 ($userID$, $Title$ 등)
   // attachmentName이 유효하고, getFilename2 처리 결과 query에 '$AttrName$'이 포함되어 있는지 확인
   query = query.replaceAll("$AttrName$", name); // '$AttrName$'을 실제 파일 이름으로 치환
-  console.log("getAttFilename: 처리된 파일 이름:", query);
+  //console.log("getAttFilename: 처리된 파일 이름:", query);
   return query; // 최종 처리된 경로/파일 이름 반환
 }
 
@@ -368,11 +376,11 @@ async function main(str) {
   globalThis.macro2 = str.macro2;
   globalThis.macro3 = str.macro3;
   if (str.savetext == true) {
-    console.log("Enabled SaveText");
+    //console.log("Enabled SaveText");
     dlText();
   }
   if (str.saveattr == true) {
-    console.log("Enabled SaveAttributes");
+    //console.log("Enabled SaveAttributes");
     dlAttr();
   }
 
@@ -387,24 +395,22 @@ async function main(str) {
   globalThis.macro3 = str.macro3;
   // ... 매크로 설정 ...
   if (str.saveimg == true) {
-    console.log("Enabled SaveImage");
-    console.log("Starting image downloads...");
+    //console.log("Enabled SaveImage");
+    //console.log("Starting image downloads...");
     await dlimg(); // dlimg의 모든 요청 전송이 끝날 때까지 대기
-    console.log("Finished requesting image downloads.");  
+    //console.log("Finished requesting image downloads.");  
   }
   
   if (str.savetext == true) {
-    console.log("Enabled SaveText");
+    //console.log("Enabled SaveText");
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
   }
 
   if (str.saveattr == true) {
-    console.log("Enabled SaveAttributes");
-    console.log("Starting attribute downloads...");
+    //console.log("Enabled SaveAttributes");
+    //console.log("Starting attribute downloads...");
     await dlAttr(); // dlAttr의 모든 요청 전송이 끝날 때까지 대기
-    console.log("Finished requesting attribute downloads.");
-  } else {
-    console.log("for debug");
+    //console.log("Finished requesting attribute downloads.");
   }
 }
 

@@ -1,3 +1,20 @@
+function localizeHtmlPage() {
+  // data-l10n-id 속성을 가진 모든 요소를 찾습니다.
+  const localizableElements = document.querySelectorAll('[data-l10n-id]');
+  
+  localizableElements.forEach(elem => {
+    // data-l10n-id 속성 값을 가져옵니다 (이것이 messages.json의 key가 됩니다).
+    const messageKey = elem.getAttribute('data-l10n-id');
+    if (messageKey) {
+      // chrome.i18n.getMessage API를 사용하여 브라우저 언어에 맞는 텍스트를 가져옵니다.
+      const message = chrome.i18n.getMessage(messageKey);
+      if (message) {
+        elem.textContent = message;
+      }
+    }
+  });
+}
+
 function save_settings() {
   var txt = document.getElementById("txt").checked;
   var img = document.getElementById("img").checked;
@@ -64,7 +81,10 @@ function initialize_settings() {
   save_settings();
 }
 
-document.addEventListener("DOMContentLoaded", load_settings);
+document.addEventListener("DOMContentLoaded", () => {
+  localizeHtmlPage(); // UI 텍스트를 먼저 지역화합니다.
+  load_settings();    // 그 다음 설정을 불러옵니다.
+});
 document.getElementById("save").addEventListener("click", save_settings);
 document.getElementById("reset").addEventListener("click", initialize_settings);
 document.getElementById("reload").addEventListener("click", load_settings);
