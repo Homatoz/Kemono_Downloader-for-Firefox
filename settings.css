@@ -19,6 +19,12 @@ label, input[type='checkbox'] {
     background-color: #f8a63a;
     border: 2px #ffffff;
 }
+td{
+    padding: 1px 5px;
+}
+tbody tr:nth-child(even){
+    background-color: #FCD994;
+}
 body{
     font-size: 15px;
 }
