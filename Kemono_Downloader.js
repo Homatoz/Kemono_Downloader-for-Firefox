@@ -1,17 +1,17 @@
 function getPlatformName() {
-  PlatformName = document.querySelector(".post__title > span:nth-child(2)").textContent;
+  PlatformName = document.querySelector(".post__title span:last-child").textContent;
   PlatformName = PlatformName.replace(/[()]/g, "");
   return sanitizeText(PlatformName);
 }
 
 function getUserName() {
-  userName = document.querySelector("a.fancy-link:nth-child(1)").textContent;
+  userName = document.querySelector("a.post__user-name").textContent;
   return sanitizeText(userName);
 }
 
 function getUserID() {
-    userID = location.pathname.match(/(?<=user\/)(.*)(?=\/post)/);
-    return userID[0];
+  userID = location.pathname.match(/(?<=user\/)(.*)(?=\/post)/);
+  return userID[0];
 }
 
 function getPageID() {
@@ -20,7 +20,7 @@ function getPageID() {
 }
 
 function getTitle() {
-  title = document.querySelector(".post__title > span:nth-child(1)").textContent;
+  title = document.querySelector(".post__title span:first-child").textContent;
   return sanitizeText(title);
 }
 
@@ -86,21 +86,6 @@ function dlText() {
     }
   }
 }
-/*
-async function dlimg() {
-  diff = getDiff();
-  for (var num = 0; num < diff; num++) {
-    url = getimgURL(num);
-    //console.log(url);
-    filename = getFilename(num) + "." + getExttype(url);
-    //console.log(filename);
-    await new Promise((s) => {
-      getFile("download", url, filename);
-      setTimeout(s, 150);
-    });
-  }
-}
-*/
 
 async function dlimg() {
   diff = getDiff();
@@ -125,22 +110,6 @@ async function dlimg() {
   }
   //console.log("dlimg: Finished sending all image download requests.");
 }
-
-/*
-async function dlAttr() {
-  diff = getAttDiff();
-  for (var num = 0; num < diff; num++) {
-    url_2 = getAttURL(num);
-    //console.log(url_2);
-    filename_2 = document.querySelectorAll(".post__attachment")[num].querySelector("a").getAttribute("download")
-    //console.log(filename_2);
-    await new Promise((s) => {
-      getAttFile("download", url_2, filename_2);
-      setTimeout(s, 150);
-    });
-  }
-}
-*/
 
 // dlAttr 함수 내부 수정 예시
 async function dlAttr() {
@@ -229,7 +198,7 @@ function sanitizeText(text, includeDot = true) {
 
   const charMap = {
     ':': '：', '/': '／', '\\': '￥', '*': '＊',
-    '?': '？', '"': '”', '<': '＜', '>': '＞', '|': '｜'
+    '?': '？', '"': '”', '<': '＜', '>': '＞', '|': '｜', '\n': ' '
   };
 
   if (includeDot) charMap['.'] = '．';
