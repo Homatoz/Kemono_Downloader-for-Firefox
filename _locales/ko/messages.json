@@ -16,7 +16,7 @@
   "macro_table_header_macro": { "message": "매크로" },
   "macro_table_header_description": { "message": "설명" },
   "macro_desc_platform": { "message": "플랫폼의 이름" },
-  "macro_desc_user": { "message": "User의 이름" },
+  "macro_desc_user_name": { "message": "User의 이름" },
   "macro_desc_title": { "message": "게시글 제목" },
   "macro_desc_img_total": { "message": "이미지 총 개수" },
   "macro_desc_img_number": { "message": "이미지 번호" },

@@ -16,7 +16,7 @@
   "macro_table_header_macro": { "message": "マクロ" },
   "macro_table_header_description": { "message": "説明" },
   "macro_desc_platform": { "message": "プラットフォーム名" },
-  "macro_desc_user": { "message": "ユーザー名" },
+  "macro_desc_user_name": { "message": "ユーザー名" },
   "macro_desc_title": { "message": "投稿のタイトル" },
   "macro_desc_img_total": { "message": "画像の総数" },
   "macro_desc_img_number": { "message": "画像の番号" },

@@ -73,11 +73,11 @@ function initialize_settings() {
   document.getElementById("textname").value =
     "__main__text__";
   document.getElementById("macro").value =
-    "Kemono_Downloader/$flatformName$/$userID$/$YY$$MM$$DD$_$Title$/$TextName$";
+    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$TextName$";
   document.getElementById("macro2").value =
-    "Kemono_Downloader/$flatformName$/$userID$/$YY$$MM$$DD$_$Title$/$Diff$";
+    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$Diff$";
   document.getElementById("macro3").value =
-    "Kemono_Downloader/$flatformName$/$userID$/$YY$$MM$$DD$_$Title$/$AttrName$";
+    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$AttrName$";
   save_settings();
 }
 

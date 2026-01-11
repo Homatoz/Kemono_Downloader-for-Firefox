@@ -1,32 +1,22 @@
-// fanbox-downloaer
-
-// Unique Functions
-// Get Page Information
-
-function getfanboxID() {
-  if (location.hostname == "kemono.cr") {
-    s = location.pathname.match(/(?<=user)(.*)(?=\/post)/); //@以降を取得
-    return s[0];
-  } else {
-    return location.hostname.replace("kemono.cr", ""); //こっちはサブドメインを取得すればOK
-  }
+function getPlatformName() {
+  PlatformName = document.querySelector(".post__title > span:nth-child(2)").textContent;
+  PlatformName = PlatformName.replace(/[()]/g, "");
+  return sanitizeText(PlatformName);
 }
 
-function getflatformName() {
-  flatformName = document.querySelector(".post__title > span:nth-child(2)").textContent;
-  flatformName = flatformName.replace(/[()]/g, "");
-  return sanitizeText(flatformName);
+function getUserName() {
+  userName = document.querySelector("a.fancy-link:nth-child(1)").textContent;
+  return sanitizeText(userName);
 }
 
-function getuserID() {
-  userID = document.querySelector("a.fancy-link:nth-child(1)").textContent;
-  return sanitizeText(userID);
+function getUserID() {
+    userID = location.pathname.match(/(?<=user\/)(.*)(?=\/post)/);
+    return userID[0];
 }
 
 function getPageID() {
-  pageID = location.pathname.match(/(?<=\/post\/)[0-Z]*/);
-  pageID_true = pageID[0].trim();
-  return pageID_true;
+  pageID = location.pathname.match(/(?<=\/post\/)[a-zA-Z0-9-]+/);
+  return pageID[0];
 }
 
 function getTitle() {
@@ -208,8 +198,9 @@ function getDate(num) {
 
 function getFilename2(query) {
   // Macro処理
-  query = query.replaceAll("$flatformName$", getflatformName());
-  query = query.replaceAll("$userID$", getuserID());
+  query = query.replaceAll("$PlatformName$", getPlatformName());
+  query = query.replaceAll("$UserName$", getUserName());
+  query = query.replaceAll("$UserID$", getUserID());
   query = query.replaceAll("$Title$", getTitle());
   query = query.replaceAll("$PageID$", getPageID());
   query = query.replaceAll("$YYYY$", getDate(1));
@@ -266,7 +257,7 @@ function getTextname(name) {
 
 function getAttFilename(name) {
   let query;
-  query = getFilename2(macro3); // macro3의 기본 플레이스홀더 처리 ($userID$, $Title$ 등)
+  query = getFilename2(macro3); // macro3의 기본 플레이스홀더 처리 ($UserName$, $Title$ 등)
   // attachmentName이 유효하고, getFilename2 처리 결과 query에 '$AttrName$'이 포함되어 있는지 확인
   query = query.replaceAll("$AttrName$", name); // '$AttrName$'을 실제 파일 이름으로 치환
   //console.log("getAttFilename: 처리된 파일 이름:", query);
