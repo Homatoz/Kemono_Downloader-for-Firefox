@@ -3,7 +3,6 @@
   "options_include_text": { "message": "Include text" },
   "options_download_images": { "message": "Download images" },
   "options_download_attachments": { "message": "Download attachments" },
-  "options_text_filename": { "message": "Text File Name Settings" },
   "options_macro_body": { "message": "Rename Macro (Body)" },
   "options_macro_image": { "message": "Rename Macro (Image)" },
   "options_macro_attachment": { "message": "Rename Macro (Attachment)" },
@@ -24,7 +23,5 @@
   "macro_desc_img_number": { "message": "Image number" },
   "macro_desc_attach_name": { "message": "Name of the attachment" },
   "macro_desc_date": { "message": "Published Year/Month/Day/Hour/Minute" },
-  "macro_desc_date28": { "message": "Published Year/Month/Day/Hour/Minute (28h format)" },
-  "macro_desc_now": { "message": "Current Year/Month/Day/Hour/Minute" },
-  "macro_desc_now28": { "message": "Current Year/Month/Day/Hour/Minute (28h format)" }
+  "macro_desc_now": { "message": "Current Year/Month/Day/Hour/Minute" }
 }

@@ -3,7 +3,6 @@
   "options_include_text": { "message": "テキストを含める" },
   "options_download_images": { "message": "画像をダウンロード" },
   "options_download_attachments": { "message": "添付ファイルをダウンロード" },
-  "options_text_filename": { "message": "テキストファイル名の設定" },
   "options_macro_body": { "message": "リネームマクロ (本文)" },
   "options_macro_image": { "message": "リネームマクロ (画像)" },
   "options_macro_attachment": { "message": "リネームマクロ (添付ファイル)" },
@@ -22,7 +21,5 @@
   "macro_desc_img_number": { "message": "画像の番号" },
   "macro_desc_attach_name": { "message": "添付ファイル名" },
   "macro_desc_date": { "message": "公開 年/月/日/時/分" },
-  "macro_desc_date28": { "message": "公開 年/月/日/時/分 (28時間制)" },
-  "macro_desc_now": { "message": "現在 年/月/日/時/分" },
-  "macro_desc_now28": { "message": "現在 年/月/日/時/分 (28時間制)" }
+  "macro_desc_now": { "message": "現在 年/月/日/時/分" }
 }
