@@ -1,26 +1,26 @@
 function getPlatformName() {
-  PlatformName = document.querySelector(".post__title span:last-child").textContent;
-  PlatformName = PlatformName.replace(/[()]/g, "");
-  return sanitizeText(PlatformName);
+  let platformName = document.querySelector(".post__title span:last-child").textContent;
+  platformName = platformName.replace(/[()]/g, "");
+  return sanitizeText(platformName);
 }
 
 function getUserName() {
-  userName = document.querySelector("a.post__user-name").textContent;
+  let userName = document.querySelector("a.post__user-name").textContent;
   return sanitizeText(userName);
 }
 
 function getUserID() {
-  userID = location.pathname.match(/(?<=user\/)(.*)(?=\/post)/);
+  let userID = location.pathname.match(/(?<=user\/)(.*)(?=\/post)/);
   return userID[0];
 }
 
 function getPageID() {
-  pageID = location.pathname.match(/(?<=\/post\/)[a-zA-Z0-9-]+/);
+  let pageID = location.pathname.match(/(?<=\/post\/)[a-zA-Z0-9-]+/);
   return pageID[0];
 }
 
 function getTitle() {
-  title = document.querySelector(".post__title span:first-child").textContent;
+  let title = document.querySelector(".post__title span:first-child").textContent;
   return sanitizeText(title);
 }
 
@@ -28,7 +28,7 @@ function getImagesCount() {
   return document.querySelectorAll(".post__thumbnail").length;
 }
 
-function getFilesCount() {
+function getAttachmentsCount() {
   return document.querySelectorAll(".post__attachment").length;
 }
 
@@ -36,7 +36,7 @@ function getImageURL(getnum) {
   return document.querySelectorAll(".post__thumbnail")[getnum].querySelector("a").getAttribute("href");
 }
 
-function getFileURL(getnum) {
+function getAttachmentURL(getnum) {
   return document.querySelectorAll(".post__attachment")[getnum].querySelector("a").getAttribute("href");
 }
 
@@ -57,11 +57,11 @@ function getText() {
 function dlText() {
   if (getText() != 0) {
     const blob2 = new Blob([getText()], { type: "text/plain" });
-    filename = getTextname(textname) + ".txt";
+    filename = getTextSavePathAndName(textname) + ".txt";
 
     if (isChrominum() == true) {
       const blob3 = URL.createObjectURL(blob2);
-      getFile("download", blob3, filename);
+      dlFile("download", blob3, filename);
       //URL.revokeObjectURL(blob3)
     } else {
       chrome.runtime.sendMessage({
@@ -74,13 +74,13 @@ function dlText() {
 }
 
 async function dlImages() {
-  diff = getImagesCount();
-  for (var num = 0; num < diff; num++) {
+  let count = getImagesCount();
+  for (let num = 0; num < count; num++) {
     try {
       const url = getImageURL(num);
-      const filename = getFilename(num) + "." + getExttype(url);
+      const filename = getImageSavePathAndName(num) + "." + getFileExtension(url);
       await new Promise((resolve, reject) => {
-        getFile("download", url, filename);
+        dlFile("download", url, filename);
         resolve();
       }, 100); // 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
     } catch (error) {
@@ -90,7 +90,7 @@ async function dlImages() {
   }
 }
 
-async function dlFiles() {
+async function dlAttachments() {
   const attachments = document.querySelectorAll(".post__attachment");
   const diff = attachments.length;
 
@@ -101,23 +101,23 @@ async function dlFiles() {
       const url_2 = attachmentElement.getAttribute("href");
       const file_2 = attachmentElement.getAttribute("download");
       if (!url_2 || !file_2) {
-        console.warn(`dlFiles: 첨부 파일 ${num + 1}의 URL 또는 파일 이름을 찾을 수 없습니다. 건너뜁니다.`);
+        console.warn(`dlAttachments: 첨부 파일 ${num + 1}의 URL 또는 파일 이름을 찾을 수 없습니다. 건너뜁니다.`);
         continue; // URL이나 파일 이름이 없으면 다음 반복으로 건너뜁니다
       }
 
       // *** 매크로 시스템을 사용하여 전체 경로 생성 ***
       // diff 유형(-2, 첨부 파일)과 원본 파일 이름을 전달합니다.
-      full_path_filename = getAttFilename(file_2);
+      full_path_filename = getAttachmentSavePathAndName(file_2);
 
       // 올바른 경로/파일 이름으로 다운로드 요청 보내기
       // 요청 간 지연을 위해 await new Promise 사용
       await new Promise((resolve) => {
-          getAttFile("download", url_2, full_path_filename);
+          dlFile("download", url_2, full_path_filename);
           setTimeout(resolve, 150); // 다음 반복 시작 전 150ms 대기
       });
 
     } catch (error) {
-      console.error(`dlFiles: 첨부 파일 ${num + 1} 처리 중 오류 발생:`, error);
+      console.error(`dlAttachments: 첨부 파일 ${num + 1} 처리 중 오류 발생:`, error);
     }
   }
 }
@@ -133,8 +133,7 @@ function getDate(num) {
   }
 }
 
-function getFilename2(query) {
-  // Macro処理
+function convertMacrosInPath(query) {
   query = query.replaceAll("$PlatformName$", getPlatformName());
   query = query.replaceAll("$UserName$", getUserName());
   query = query.replaceAll("$UserID$", getUserID());
@@ -157,8 +156,7 @@ function getFilename2(query) {
   query = query.replaceAll("$NDD28$", getDateNow(3, true));
   query = query.replaceAll("$Nhh28$", getDateNow(4, true));
   query = query.replaceAll("$Nmm$", getDateNow(5));
-  // ファイル名先頭処理
-  return query.replace(/(^\s+)/g, "");
+  return query.trim();
 }
 
 function sanitizeText(text, includeDot = true) {
@@ -176,41 +174,33 @@ function sanitizeText(text, includeDot = true) {
   return text.replace(pattern, (match) => charMap[match]).trim();
 }
 
-function getFilename(diff) {
+function getImageSavePathAndName(diff) {
   let query;
-  query = getFilename2(macro2);
+  query = convertMacrosInPath(macro2);
   query = query.replaceAll("$DiffCount$", getImagesCount());
   query = query.replaceAll("$Diff$", ("" + (diff + 1)).padStart(3, "0"));
   return query;
 }
 
-function getTextname(name) {
+function getTextSavePathAndName(name) {
   let query;
-  query = getFilename2(macro);
+  query = convertMacrosInPath(macro);
   query = query.replaceAll("$TextName$", name);
   return query;
 }
 
-function getAttFilename(name) {
+function getAttachmentSavePathAndName(name) {
   let query;
-  query = getFilename2(macro3);
+  query = convertMacrosInPath(macro3);
   query = query.replaceAll("$AttrName$", name);
   return query;
 }
 
-function getExttype(URL) {
+function getFileExtension(URL) {
   return URL.split("/").reverse()[0].split(".")[2];
 }
 
-function getFile(type, url, filename) {
-  chrome.runtime.sendMessage({
-    type: type,
-    url: url,
-    filename: filename,
-  });
-}
-
-function getAttFile(type, url, filename) {
+function dlFile(type, url, filename) {
   chrome.runtime.sendMessage({
     type: type,
     url: url,
@@ -267,7 +257,7 @@ async function main(str) {
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
   }
   if (str.saveattr == true) {
-    await dlFiles(); // dlFiles의 모든 요청 전송이 끝날 때까지 대기
+    await dlAttachments(); // dlAttachments의 모든 요청 전송이 끝날 때까지 대기
   }
 }
 
