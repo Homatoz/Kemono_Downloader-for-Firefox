@@ -14,32 +14,13 @@ function getfanboxID() {
 
 function getflatformName() {
   flatformName = document.querySelector(".post__title > span:nth-child(2)").textContent;
-  if (flatformName == "(Pixiv Fanbox)") {
-    flatformName = "Fanbox";
-  } else if (flatformName == "(Patreon)") {
-    flatformName = "Patreon";
-  } else if (flatformName == "(Fantia)") {
-    flatformName = "Fantia";
-  } else if (flatformName == "(Afdian)") {
-    flatformName = "Afdian";
-  } else if (flatformName == "(Boosty)") {
-    flatformName = "Boosty";
-  } else if (flatformName == "(SubscribeStar)") {
-    flatformName = "(SubscribeStar)";
-  } else if (flatformName == "(DLsite)") {
-    flatformName = "DLsite";
-  } else if (flatformName == "(Gumroad)") {
-    flatformName = "Gumroad";
-  } else {
-    flatformName = "Unknown";
-  }
-  return repFlatformname(flatformName);
+  flatformName = flatformName.replace(/[()]/g, "");
+  return sanitizeText(flatformName);
 }
 
 function getuserID() {
   userID = document.querySelector("a.fancy-link:nth-child(1)").textContent;
-  userID_true = userID.trim();
-  return repUserID(userID_true);
+  return sanitizeText(userID);
 }
 
 function getPageID() {
@@ -50,8 +31,7 @@ function getPageID() {
 
 function getTitle() {
   title = document.querySelector(".post__title > span:nth-child(1)").textContent;
-  title_true = title.trim();
-  return repTitlename(title_true);
+  return sanitizeText(title);
 }
 
 function getDiff() {
@@ -253,39 +233,19 @@ function getFilename2(query) {
   return query.replace(/(^\s+)/g, "");
 }
 
-function repFlatformname(query) {
-  hyp_src = [":", "/", "\\", "*", "?", '"', "<", ">", "|","."];
-  hyp_rep = ["：", "／", "￥", "＊", "？", "”", "＜", "＞", "｜","．"];
-  for (i = 0; i < hyp_src.length; i++) {
-    query = query.replaceAll(hyp_src[i], hyp_rep[i]);
-  }
-  return query.replace(/(^\s+)/g, "");
-}
-function repFilename(query) {
-  hyp_src = [":", "/", "\\", "*", "?", '"', "<", ">", "|",];
-  hyp_rep = ["：", "／", "￥", "＊", "？", "”", "＜", "＞", "｜"];
-  for (i = 0; i < hyp_src.length; i++) {
-    query = query.replaceAll(hyp_src[i], hyp_rep[i]);
-  }
-  return query.replace(/(^\s+)/g, "");
-}
+function sanitizeText(text, includeDot = true) {
+  if (!text) return "";
 
-function repTitlename(query) {
-  hyp_src = [":", "/", "\\", "*", "?", '"', "<", ">", "|","."];
-  hyp_rep = ["：", "／", "￥", "＊", "？", "”", "＜", "＞", "｜","．"];
-  for (i = 0; i < hyp_src.length; i++) {
-    query = query.replaceAll(hyp_src[i], hyp_rep[i]);
-  }
-  return query.replace(/(^\s+)/g, "");
-}
+  const charMap = {
+    ':': '：', '/': '／', '\\': '￥', '*': '＊',
+    '?': '？', '"': '”', '<': '＜', '>': '＞', '|': '｜'
+  };
 
-function repUserID(query) {
-  hyp_src = [":", "/", "\\", "*", "?", '"', "<", ">", "|","."];
-  hyp_rep = ["：", "／", "￥", "＊", "？", "”", "＜", "＞", "｜","．"];
-  for (i = 0; i < hyp_src.length; i++) {
-    query = query.replaceAll(hyp_src[i], hyp_rep[i]);
-  }
-  return query.replace(/(^\s+)/g, "");
+  if (includeDot) charMap['.'] = '．';
+
+  const pattern = new RegExp(`[${Object.keys(charMap).join('\\')}]`, 'g');
+
+  return text.replace(pattern, (match) => charMap[match]).trim();
 }
 
 function getFilename(diff) {
