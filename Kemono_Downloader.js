@@ -24,32 +24,20 @@ function getTitle() {
   return sanitizeText(title);
 }
 
-function getDiff() {
-  a = document.querySelectorAll(".post__thumbnail");
-  a = a.length;
-  return a;
+function getImagesCount() {
+  return document.querySelectorAll(".post__thumbnail").length;
 }
 
-function getAttDiff() {
-  a = document.querySelectorAll(".post__attachment");
-  a = a.length;
-  return a;
+function getFilesCount() {
+  return document.querySelectorAll(".post__attachment").length;
 }
 
-function getimgURL(getnum) {
-  a = document.querySelectorAll(".post__thumbnail")[getnum].querySelector("a").getAttribute("href");
-  
-  return a;
+function getImageURL(getnum) {
+  return document.querySelectorAll(".post__thumbnail")[getnum].querySelector("a").getAttribute("href");
 }
 
-function getAttURL(getnum) {
-  a = document.querySelectorAll(".post__attachment")[getnum].querySelector("a").getAttribute("href");
-  if (a == null) {
-  a = document.querySelectorAll(".post__attachments")[getnum].querySelector("a").getAttribute("href");
-  }
-  //console.log(`dlimg: Found ${a} files. Starting download requests...`);
-
-  return a;
+function getFileURL(getnum) {
+  return document.querySelectorAll(".post__attachment")[getnum].querySelector("a").getAttribute("href");
 }
 
 function getText() {
@@ -72,9 +60,7 @@ function dlText() {
     filename = getTextname(textname) + ".txt";
 
     if (isChrominum() == true) {
-      //console.log("SetFlag: Chrominum");
       const blob3 = URL.createObjectURL(blob2);
-      //console.log(blob3);
       getFile("download", blob3, filename);
       //URL.revokeObjectURL(blob3)
     } else {
@@ -87,49 +73,38 @@ function dlText() {
   }
 }
 
-async function dlimg() {
-  diff = getDiff();
-  //console.log(`dlimg: Found ${diff} images. Starting download requests...`);
+async function dlImages() {
+  diff = getImagesCount();
   for (var num = 0; num < diff; num++) {
-    try { // 오류 발생 시 루프 중단을 막기 위해 try-catch 추가
-      //console.log(`dlimg: Processing image ${num + 1}/${diff}`);
-      const url = getimgURL(num);
-      //console.log("dlimg: URL:", url);
+    try {
+      const url = getImageURL(num);
       const filename = getFilename(num) + "." + getExttype(url);
-      //console.log("dlimg: Filename:", filename);
-      //console.log("dlimg: Sending download request for", filename);
-      await new Promise((resolve, reject) => { // resolve/reject 추가
+      await new Promise((resolve, reject) => {
         getFile("download", url, filename);
-          //console.log(`dlimg: Request sent for image ${num + 1}. Continuing...`);
-          resolve(); // 성공 시 resolve 호출
-        }, 100); // 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
+        resolve();
+      }, 100); // 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
     } catch (error) {
-      console.error(`dlimg: Error processing image ${num + 1}:`, error);
+      console.error(`dlImages: Error processing image ${num + 1}:`, error);
       // 오류 발생 시 다음 이미지로 계속 진행할지 결정
     }
   }
-  //console.log("dlimg: Finished sending all image download requests.");
 }
 
-// dlAttr 함수 내부 수정 예시
-async function dlAttr() {
-  const attachments = document.querySelectorAll(".post__attachment"); // 요소를 한 번만 선택
-  const diff = attachments.length; // 선택된 요소의 길이 사용
-  //console.log(`dlAttr: ${diff}개의 첨부 파일을 찾았습니다. 다운로드 요청을 시작합니다...`);
+async function dlFiles() {
+  const attachments = document.querySelectorAll(".post__attachment");
+  const diff = attachments.length;
 
   for (var num = 0; num < diff; num++) {
-    try { // 이전에 추가된 오류 처리는 좋습니다
-      const attachmentElement = attachments[num].querySelector("a"); // 링크 요소 가져오기
+    try {
+      const attachmentElement = attachments[num].querySelector("a");
 
-      const url_2 = attachmentElement.getAttribute("href"); // URL 직접 가져오기
-      const file_2 = attachmentElement.getAttribute("download"); // 파일 이름 가져오기
-      //console.log("dlAttr: URL 및 파일 이름 확인 : ", url_2, file_2);
+      const url_2 = attachmentElement.getAttribute("href");
+      const file_2 = attachmentElement.getAttribute("download");
       if (!url_2 || !file_2) {
-        console.warn(`dlAttr: 첨부 파일 ${num + 1}의 URL 또는 파일 이름을 찾을 수 없습니다. 건너뜁니다.`);
+        console.warn(`dlFiles: 첨부 파일 ${num + 1}의 URL 또는 파일 이름을 찾을 수 없습니다. 건너뜁니다.`);
         continue; // URL이나 파일 이름이 없으면 다음 반복으로 건너뜁니다
       }
 
-      //console.log("dlAttr: 원본 파일 이름 확인:", file_2);
       // *** 매크로 시스템을 사용하여 전체 경로 생성 ***
       // diff 유형(-2, 첨부 파일)과 원본 파일 이름을 전달합니다.
       full_path_filename = getAttFilename(file_2);
@@ -138,19 +113,14 @@ async function dlAttr() {
       // 요청 간 지연을 위해 await new Promise 사용
       await new Promise((resolve) => {
           getAttFile("download", url_2, full_path_filename);
-          //console.log(`dlAttr: 다운로드 요청 전송 완료: ${full_path_filename}`);
           setTimeout(resolve, 150); // 다음 반복 시작 전 150ms 대기
       });
-    //console.log("dlAttr: 모든 첨부 파일 다운로드 요청 전송 완료.");
 
     } catch (error) {
-      console.error(`dlAttr: 첨부 파일 ${num + 1} 처리 중 오류 발생:`, error);
+      console.error(`dlFiles: 첨부 파일 ${num + 1} 처리 중 오류 발생:`, error);
     }
   }
 }
-
-// getFilename 함수에 diff == -2 케이스가 이미 macro3를 사용하게 되어 있다면 위 코드에서 getFilename(-2) 사용 가능
-// 또는 macro3 설정을 옵션 페이지에서 추가해야 함.
 
 function getDate(num) {
   try {
@@ -162,8 +132,6 @@ function getDate(num) {
     return replaced[num];
   }
 }
-
-// Common Functions
 
 function getFilename2(query) {
   // Macro処理
@@ -211,29 +179,25 @@ function sanitizeText(text, includeDot = true) {
 function getFilename(diff) {
   let query;
   query = getFilename2(macro2);
-  query = query.replaceAll("$DiffCount$", getDiff());
+  query = query.replaceAll("$DiffCount$", getImagesCount());
   query = query.replaceAll("$Diff$", ("" + (diff + 1)).padStart(3, "0"));
-  return query; // 최종 처리된 경로/파일 이름 반환
+  return query;
 }
 
 function getTextname(name) {
   let query;
   query = getFilename2(macro);
   query = query.replaceAll("$TextName$", name);
-  //console.log("getTextname: 처리된 파일 이름:", query);
-  return query; // 최종 처리된 경로/파일 이름 반환
+  return query;
 }
 
 function getAttFilename(name) {
   let query;
-  query = getFilename2(macro3); // macro3의 기본 플레이스홀더 처리 ($UserName$, $Title$ 등)
-  // attachmentName이 유효하고, getFilename2 처리 결과 query에 '$AttrName$'이 포함되어 있는지 확인
-  query = query.replaceAll("$AttrName$", name); // '$AttrName$'을 실제 파일 이름으로 치환
-  //console.log("getAttFilename: 처리된 파일 이름:", query);
-  return query; // 최종 처리된 경로/파일 이름 반환
+  query = getFilename2(macro3);
+  query = query.replaceAll("$AttrName$", name);
+  return query;
 }
 
-// URIから判定する場合
 function getExttype(URL) {
   return URL.split("/").reverse()[0].split(".")[2];
 }
@@ -263,7 +227,6 @@ function isChrominum() {
 
 function getDateNow(query, custom) {
   dateNow = new Date(Date.now());
-  //dateNow = new Date (2023,7 -1 ,1,0,15,23);
 
   replaced = [
     dateNow,
@@ -296,24 +259,15 @@ async function main(str) {
   globalThis.macro = str.macro;
   globalThis.macro2 = str.macro2;
   globalThis.macro3 = str.macro3;
-  // ... 매크로 설정 ...
+
   if (str.saveimg == true) {
-    //console.log("Enabled SaveImage");
-    //console.log("Starting image downloads...");
-    await dlimg(); // dlimg의 모든 요청 전송이 끝날 때까지 대기
-    //console.log("Finished requesting image downloads.");  
+    await dlImages(); // dlImages의 모든 요청 전송이 끝날 때까지 대기
   }
-  
   if (str.savetext == true) {
-    //console.log("Enabled SaveText");
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
   }
-
   if (str.saveattr == true) {
-    //console.log("Enabled SaveAttributes");
-    //console.log("Starting attribute downloads...");
-    await dlAttr(); // dlAttr의 모든 요청 전송이 끝날 때까지 대기
-    //console.log("Finished requesting attribute downloads.");
+    await dlFiles(); // dlFiles의 모든 요청 전송이 끝날 때까지 대기
   }
 }
 
