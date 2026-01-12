@@ -149,7 +149,7 @@ function sanitizeText(text, includeDot = true) {
   text = text.replace(/[\u200b\ufeff]/g, '');
 
   text = text.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
-  
+
   text = text.replace(/\s+/g, ' ');
 
   const charMap = {
@@ -241,7 +241,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3"],
     function (str) {
       if (str.macro == undefined) {
-        alert("kemono-downloader：\n확장 프로그램 설정을 해주세요.\nPlease set the settings.\n設定をしてください。\n");
+        alert("kemono-downloader Ver 1.2.0：\n확장 프로그램 설정을 해주세요.\nPlease save the settings.\n設定を保存してください。\n");
         return chrome.runtime.sendMessage({ type: "set" });
       } else {
         main(str);
