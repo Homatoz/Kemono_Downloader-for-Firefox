@@ -144,6 +144,8 @@ function convertMacrosInPath(query) {
 function sanitizeText(text, includeDot = true) {
   if (!text) return "";
 
+  text = text.replace(/\s+/g, ' '); // replace '\r', '\n', '\t' to ' '
+
   const charMap = {
     ':': '：', '/': '／', '\\': '￥', '*': '＊', '?': '？',
     '"': '”', '<': '＜', '>': '＞', '|': '｜', '\n': ' '
@@ -151,7 +153,11 @@ function sanitizeText(text, includeDot = true) {
 
   if (includeDot) charMap['.'] = '．';
 
-  const pattern = new RegExp(`[${Object.keys(charMap).join('\\')}]`, 'g');
+  const escapedKeys = Object.keys(charMap).map(key => 
+    key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  );
+
+  const pattern = new RegExp(escapedKeys.join('|'), 'g');
 
   return text.replace(pattern, (match) => charMap[match]).trim();
 }
@@ -229,7 +235,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3"],
     function (str) {
       if (str.macro == undefined) {
-        alert("kemono-downloader：확장 프로그램 설정을 해주세요.");
+        alert("kemono-downloader：\n확장 프로그램 설정을 해주세요.\nPlease set the settings.\n設定をしてください。\n");
         return chrome.runtime.sendMessage({ type: "set" });
       } else {
         main(str);
