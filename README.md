@@ -2,10 +2,20 @@
 
 This program was developed based on [tana3n](https://github.com/tana3n)’s program, [kemono-downloader](https://github.com/tana3n/fanbox-downloader).
 
-Currently, only Korean is supported; other languages are not available.
+Currently, these languages are supported.
+<ul>
+  <li>Korean</li>
+  <li>English</li>
+  <li>Japanese</li>
+  <li>Russian</li>
+</ul>
 
 The differences from the original program are as follows:
-・Only can useable at kemono.su
+・Only can useable at kemono.cr
 ・Some features have been added and improved
 
 I would like to express my gratitude to 'tana3n' for providing the original code.
+
+
+<h2>Special Thanks to</h2>
+<b>Homatoz</b>
