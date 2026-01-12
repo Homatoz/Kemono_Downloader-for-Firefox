@@ -144,11 +144,17 @@ function convertMacrosInPath(query) {
 function sanitizeText(text, includeDot = true) {
   if (!text) return "";
 
-  text = text.replace(/\s+/g, ' '); // replace '\r', '\n', '\t' to ' '
+  text = text.normalize('NFKC');
+
+  text = text.replace(/[\u200b\ufeff]/g, '');
+
+  text = text.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
+  
+  text = text.replace(/\s+/g, ' ');
 
   const charMap = {
     ':': '：', '/': '／', '\\': '￥', '*': '＊', '?': '？',
-    '"': '”', '<': '＜', '>': '＞', '|': '｜', '\n': ' '
+    '"': '”', '<': '＜', '>': '＞', '|': '｜'
   };
 
   if (includeDot) charMap['.'] = '．';
@@ -156,11 +162,11 @@ function sanitizeText(text, includeDot = true) {
   const escapedKeys = Object.keys(charMap).map(key => 
     key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   );
-
   const pattern = new RegExp(escapedKeys.join('|'), 'g');
 
   return text.replace(pattern, (match) => charMap[match]).trim();
 }
+
 
 function getImageSavePathAndName(num) {
   let query;
