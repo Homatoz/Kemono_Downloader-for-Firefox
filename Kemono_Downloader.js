@@ -41,25 +41,17 @@ function getAttachmentURL(getnum) {
 }
 
 function getText() {
-  try {
-    text = document.querySelector(".post__content").querySelector("p");
-    return text;
-  } catch (error) {
-    try {
-      text = document.querySelector(".post__content").querySelector("pre").innerText;
-      return text;
-    } catch (err) {
-      return 0;
-    }
-  }
+  const container = document.querySelector(".post__content");
+  return container ? container.innerText.trim() : null
 }
 
 function dlText() {
-  if (getText() != 0) {
-    const blob2 = new Blob([getText()], { type: "text/plain" });
+  const text = getText();
+  if (text) {
+    const blob2 = new Blob([text], { type: "text/plain" });
     filename = getTextSavePathAndName() + ".txt";
 
-    if (isChrominum() == true) {
+    if (isChromium() == true) {
       const blob3 = URL.createObjectURL(blob2);
       dlFile("download", blob3, filename);
       //URL.revokeObjectURL(blob3)
@@ -196,7 +188,7 @@ function dlFile(type, url, filename) {
   });
 }
 
-function isChrominum() {
+function isChromium() {
   const s = chrome.runtime.getURL("");
   if (/chrome/.test(s) == true) {
     return true;
