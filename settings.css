@@ -61,3 +61,7 @@ td:first-child {
 .copy-btn:active {
     transform: scale(0.9);
 }
+
+[data-l10n-id] {
+    white-space: pre-line;
+}

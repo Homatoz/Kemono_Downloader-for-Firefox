@@ -1,3 +1,4 @@
+// Functions for general macros
 function getPlatformName() {
   let platformName = document.querySelector(".post__title span:last-child").textContent;
   platformName = platformName.replace(/[()]/g, "");
@@ -32,37 +33,60 @@ function getAttachmentsCount() {
   return document.querySelectorAll(".post__attachment").length;
 }
 
-function getAttachmentURL(getnum) {
-  return document.querySelectorAll(".post__attachment")[getnum].querySelector("a").getAttribute("href");
+function sanitizeText(text, includeDot = true) {
+  if (!text) return "";
+
+  text = text.normalize('NFKC');
+
+  text = text.replace(/[\u200b\ufeff]/g, '');
+
+  text = text.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
+
+  text = text.replace(/\s+/g, ' ');
+
+  const charMap = {
+    ':': '：', '/': '／', '\\': '￥', '*': '＊', '?': '？',
+    '"': '”', '<': '＜', '>': '＞', '|': '｜'
+  };
+
+  if (includeDot) charMap['.'] = '．';
+
+  const escapedKeys = Object.keys(charMap).map(key =>
+    key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  );
+  const pattern = new RegExp(escapedKeys.join('|'), 'g');
+
+  return text.replace(pattern, (match) => charMap[match]).trim();
 }
 
-function getText() {
-  const container = document.querySelector(".post__content");
-  return container ? container.innerText.trim() : null
-}
-
-function dlText() {
-  const text = getText();
-  if (text) {
-    const blob2 = new Blob([text], { type: "text/plain" });
-    filename = getTextSavePathAndName();
-
-    if (isChromium() == true) {
-      const blob3 = URL.createObjectURL(blob2);
-      dlFile("download", blob3, filename);
-      //URL.revokeObjectURL(blob3)
-    } else {
-      chrome.runtime.sendMessage({
-        type: "blob",
-        blob: blob2,
-        filename: filename,
-      });
-    }
+// Functions for time macros
+function getDate(num) {
+  try {
+    src = document.querySelector(".timestamp").getAttribute("datetime");
+    replaced = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)/.exec(src);
+    return replaced[num];
+  } catch (error) {
+    replaced = [ "0", "0000", "00", "00", "00", "00", "00" ]
+    return replaced[num];
   }
 }
 
+function getDateNow(query) {
+  dateNow = new Date(Date.now());
+  replaced = [
+    dateNow,
+    dateNow.getFullYear().toString(),
+    (dateNow.getMonth() + 1).toString(),
+    dateNow.getDate().toString(),
+    dateNow.getHours().toString(),
+    dateNow.getMinutes().toString(),
+  ];
+  return replaced[query].padStart(2, "0");
+}
+
+// Downloading functions
 function collectContent(type) {
-  const isImages = type === 'images';
+  const isImages = type === 'image';
   const selector = isImages ? '.post__thumbnail' : '.post__attachment';
   const items = document.querySelectorAll(selector);
 
@@ -132,47 +156,61 @@ function collectContent(type) {
   }, []);
 }
 
-async function dlImages() {
-  const arrImages = collectContent('images');
-  for (const image of arrImages) {
-    try {
-      const filename = getImageSavePathAndName(image);
-      await new Promise((resolve) => {
-        dlFile("download", image.url, filename);
-        setTimeout(resolve, 150);// 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
+function dlText() {
+  const container = document.querySelector(".post__content");
+  const text = container ? container.innerText.trim() : null
+  if (text) {
+    const blob2 = new Blob([text], { type: "text/plain" });
+    filename = convertMacrosInPath(macro) + ".txt";
+
+    if (isChromium() == true) {
+      const blob3 = URL.createObjectURL(blob2);
+      dlFile("download", blob3, filename);
+      //URL.revokeObjectURL(blob3)
+    } else {
+      chrome.runtime.sendMessage({
+        type: "blob",
+        blob: blob2,
+        filename: filename,
       });
-    } catch (error) {
-      console.error(`dlImages: Error processing image ${image.index}:`, error);
-      // 오류 발생 시 다음 이미지로 계속 진행할지 결정
     }
   }
 }
 
-async function dlAttachments() {
-  const arrAttachments = collectContent('attachments');
-  for (const attachment of arrAttachments) {
+async function dlContent(type) {
+  const items = collectContent(type);
+
+  for (const item of items) {
     try {
-      const filename = getAttachmentSavePathAndName(attachment);
+      const filename = getSavePathAndName(type, item);
       await new Promise((resolve) => {
-        dlFile("download", attachment.url, filename);
-        setTimeout(resolve, 150);// 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
+        dlFile("download", item.url, filename);
+        setTimeout(resolve, 150);
       });
     } catch (error) {
-      console.error(`dlAttachments: 첨부 파일 ${attachment.index} 처리 중 오류 발생:`, error);
-      // 오류 발생 시 다음 이미지로 계속 진행할지 결정
+      console.error(`dlContent (${type}): Error processing item ${item.index}:`, error);
     }
   }
 }
 
-function getDate(num) {
-  try {
-    src = document.querySelector(".timestamp").getAttribute("datetime");
-    replaced = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)/.exec(src);
-    return replaced[num];
-  } catch (error) {
-    replaced = [ "0", "0000", "00", "00", "00", "00", "00" ]
-    return replaced[num];
-  }
+function getSavePathAndName(type, item) {
+  const config = {
+    'image': { macro: macro2, prefix: 'Image' },
+    'attachment': { macro: macro3, prefix: 'Att' }
+  };
+
+  const { macro, prefix } = config[type];
+  let query = convertMacrosInPath(macro);
+
+  // Search $PrefixCounter$ or $PrefixCounter#X$
+  const counterRegex = new RegExp(`\\$${prefix}Counter(?:#(\\d+))?\\$`, 'g');
+
+  query = query.replace(counterRegex, (match, padValue) => {
+    const indexStr = String(item.index);
+    return padValue ? indexStr.padStart(Number(padValue), "0") : indexStr;
+  });
+
+  return query.replaceAll(`$${prefix}Name$`, item.name) + item.extension;
 }
 
 function convertMacrosInPath(query) {
@@ -198,56 +236,6 @@ function convertMacrosInPath(query) {
   return query.trim();
 }
 
-function sanitizeText(text, includeDot = true) {
-  if (!text) return "";
-
-  text = text.normalize('NFKC');
-
-  text = text.replace(/[\u200b\ufeff]/g, '');
-
-  text = text.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
-
-  text = text.replace(/\s+/g, ' ');
-
-  const charMap = {
-    ':': '：', '/': '／', '\\': '￥', '*': '＊', '?': '？',
-    '"': '”', '<': '＜', '>': '＞', '|': '｜'
-  };
-
-  if (includeDot) charMap['.'] = '．';
-
-  const escapedKeys = Object.keys(charMap).map(key => 
-    key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  );
-  const pattern = new RegExp(escapedKeys.join('|'), 'g');
-
-  return text.replace(pattern, (match) => charMap[match]).trim();
-}
-
-function getImageSavePathAndName(image) {
-  let query;
-  query = convertMacrosInPath(macro2);
-  query = query.replaceAll("$ImageCounter$", ("" + (image.index)).padStart(3, "0"));
-  query = query.replaceAll("$ImageName$", image.name);
-  query = query + image.extension;
-  return query;
-}
-
-function getTextSavePathAndName() {
-  let query;
-  query = convertMacrosInPath(macro) + ".txt";
-  return query;
-}
-
-function getAttachmentSavePathAndName(attachment) {
-  let query;
-  query = convertMacrosInPath(macro3);
-  query = query.replaceAll("$AttCounter$", ("" + (attachment.index)).padStart(3, "0"));
-  query = query.replaceAll("$AttName$", attachment.name);
-  query = query + attachment.extension;
-  return query;
-}
-
 function dlFile(type, url, filename) {
   chrome.runtime.sendMessage({
     type: type,
@@ -256,6 +244,7 @@ function dlFile(type, url, filename) {
   });
 }
 
+// Utility function
 function isChromium() {
   const s = chrome.runtime.getURL("");
   if (/chrome/.test(s) == true) {
@@ -263,19 +252,7 @@ function isChromium() {
   } else return false;
 }
 
-function getDateNow(query) {
-  dateNow = new Date(Date.now());
-  replaced = [
-    dateNow,
-    dateNow.getFullYear().toString(),
-    (dateNow.getMonth() + 1).toString(),
-    dateNow.getDate().toString(),
-    dateNow.getHours().toString(),
-    dateNow.getMinutes().toString(),
-  ];
-  return replaced[query].padStart(2, "0");
-}
-
+// Main functions
 async function main(str) {
   globalThis.macro = str.macro;
   globalThis.macro2 = str.macro2;
@@ -283,14 +260,14 @@ async function main(str) {
   globalThis.removedupbyurl = str.removedupbyurl;
   globalThis.removedupbyname = str.removedupbyname;
 
-  if (str.saveimg == true) {
-    await dlImages(); // dlImages의 모든 요청 전송이 끝날 때까지 대기
-  }
   if (str.savetext == true) {
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
   }
+  if (str.saveimg == true) {
+    await dlContent('image'); // dlImages의 모든 요청 전송이 끝날 때까지 대기
+  }
   if (str.saveattr == true) {
-    await dlAttachments(); // dlAttachments의 모든 요청 전송이 끝날 때까지 대기
+    await dlContent('attachment'); // dlAttachments의 모든 요청 전송이 끝날 때까지 대기
   }
 }
 

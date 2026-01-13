@@ -9,26 +9,24 @@
   <div class="sub">
     <label for="txt">
       <input type="checkbox" id="txt" name="txt" >
-      <span data-l10n-id="options_include_text">Include text</span>
+      <span data-l10n-id="options_download_text">Download text</span>
     </label><br>
     <label for ="img">
       <input type="checkbox" id="img" name="img">
       <span data-l10n-id="options_download_images">Download images</span>
     </label><br>
-    <div style="margin-left: 20px;">
-      <label for="removedupbyurl">
-        <input type="checkbox" id="removedupbyurl" name="removedupbyurl">
-        <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
-      </label><br>
-      <label for="removedupbyname">
-        <input type="checkbox" id="removedupbyname" name="removedupbyname">
-        <span data-l10n-id="options_remove_duplicates_by_name">Remove duplicates by name</span> <span style="color: red;" data-l10n-id="warning_remove_duplicates_by_name">(Use with caution)</span>
-      </label>
-    </div>
     <label for="attr">
       <input type="checkbox" id="attr" name="attr">
       <span data-l10n-id="options_download_attachments">Download attachments</span>
     </label><br>
+    <label for="removedupbyurl">
+      <input type="checkbox" id="removedupbyurl" name="removedupbyurl">
+      <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
+    </label><br>
+    <label for="removedupbyname">
+      <input type="checkbox" id="removedupbyname" name="removedupbyname">
+      <span data-l10n-id="options_remove_duplicates_by_name">Remove duplicates by name</span> <span style="color: red;" data-l10n-id="warning_remove_duplicates_by_name">(Use with caution)</span>
+    </label>
   </div>
 
   <br>
@@ -107,7 +105,12 @@
       <tr>
         <td><button class="copy-btn">📋</button></td>
         <td>$ImageCounter$</td>
-        <td data-l10n-id="macro_desc_img_number">Image number</td>
+        <td data-l10n-id="macro_desc_img_number">Image number without leading zeros</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$ImageCounter#X$</td>
+        <td data-l10n-id="macro_desc_img_number_X">Image number with leading zeros<br/>Replace X with the desired number of digits</td>
       </tr>
       <tr>
         <td><button class="copy-btn">📋</button></td>
@@ -124,7 +127,12 @@
       <tr>
         <td><button class="copy-btn">📋</button></td>
         <td>$AttCounter$</td>
-        <td data-l10n-id="macro_desc_att_number">Attachment number</td>
+        <td data-l10n-id="macro_desc_att_number">Attachment number without leading zeros</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$AttCounter#X$</td>
+        <td data-l10n-id="macro_desc_att_number_X">Attachment number with leading zeros<br/>Replace X with the desired number of digits</td>
       </tr>
       <tr>
         <td><button class="copy-btn">📋</button></td>

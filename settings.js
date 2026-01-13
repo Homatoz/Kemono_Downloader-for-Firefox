@@ -79,7 +79,7 @@ function initialize_settings() {
   document.getElementById("macro").value =
     "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/__main__text__";
   document.getElementById("macro2").value =
-    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$ImageCounter$";
+    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$ImageCounter#3$";
   document.getElementById("macro3").value =
     "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$AttName$";
   save_settings();
