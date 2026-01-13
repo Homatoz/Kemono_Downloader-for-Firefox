@@ -48,45 +48,152 @@
     <br>
     <span data-l10n-id="options_save_notice">All changes will be applied by clicking Save.</span><br>
   </p>
+  <div class="main" data-l10n-id="options_macro_list">List of macros</div>
+  <div data-l10n-id="options_macro_help">To copy a macro, click the icon to the left of it.</div>
   <table class="macrolist">
     <thead>
       <tr class="list-t">
-        <th data-l10n-id="macro_table_header_macro">Macro</th> <th data-l10n-id="macro_table_header_description">Description</th>
+        <th></th>
+        <th data-l10n-id="macro_table_header_macro">Macro</th>
+        <th data-l10n-id="macro_table_header_description">Description</th>
+      </tr>
+      <tr class="list-t">
+        <th colspan="3" data-l10n-id="macro_table_header_general">General macros</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>$PlatformName$</td> <td data-l10n-id="macro_desc_platform">Name of the platform</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$PlatformName$</td>
+        <td data-l10n-id="macro_desc_platform">Name of the platform</td>
       </tr>
       <tr>
-        <td>$UserName$</td> <td data-l10n-id="macro_desc_user_name">Name of the user</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$UserName$</td>
+        <td data-l10n-id="macro_desc_user_name">Name of the user</td>
       </tr>
       <tr>
-        <td>$UserID$</td> <td data-l10n-id="macro_desc_user_id">User ID</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$UserID$</td>
+        <td data-l10n-id="macro_desc_user_id">User ID</td>
       </tr>
       <tr>
-        <td>$Title$</td> <td data-l10n-id="macro_desc_title">Post title</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$Title$</td>
+        <td data-l10n-id="macro_desc_title">Post title</td>
       </tr>
       <tr>
-        <td>$PageID$</td> <td data-l10n-id="macro_desc_page_id">Page ID</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$PageID$</td>
+        <td data-l10n-id="macro_desc_page_id">Page ID</td>
       </tr>
       <tr>
-        <td>$ImagesCount$</td> <td data-l10n-id="macro_desc_img_total">Total number of images</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$ImagesCount$</td>
+        <td data-l10n-id="macro_desc_img_total">Total number of images</td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr class="list-t">
+        <th colspan="3" data-l10n-id="macro_table_header_image">Image macros</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$Counter$</td>
+        <td data-l10n-id="macro_desc_img_number">Image number</td>
       </tr>
       <tr>
-        <td>$Counter$</td> <td data-l10n-id="macro_desc_img_number">Image number</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$ImageName$</td>
+        <td data-l10n-id="macro_desc_img_name">Original image name (if specified in URL)</td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr class="list-t">
+        <th colspan="3" data-l10n-id="macro_table_header_attachment">Attachment macros</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$AttachmentName$</td>
+        <td data-l10n-id="macro_desc_attach_name">Name of the attachment</td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr class="list-t">
+        <th colspan="3" data-l10n-id="macro_table_header_publication_time">Publication time macros</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$YYYY$</td>
+        <td data-l10n-id="macro_desc_year">Year</td>
       </tr>
       <tr>
-        <td>$ImageName$</td> <td data-l10n-id="macro_desc_img_name">Original image name (if specified in URL)</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$YY$</td>
+        <td data-l10n-id="macro_desc_year_short">Year (short)</td>
       </tr>
       <tr>
-        <td>$AttachmentName$</td> <td data-l10n-id="macro_desc_attach_name">Name of the attachment</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$MM$</td>
+        <td data-l10n-id="macro_desc_month">Month</td>
       </tr>
       <tr>
-        <td>$YYYY$<br/>$YY$<br/>$MM$<br/>$DD$<br/>$hh$<br/>$mm$</td> <td data-l10n-id="macro_desc_date">Published Year/Month/Day/Hour/Minute</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$DD$</td>
+        <td data-l10n-id="macro_desc_day">Day</td>
       </tr>
       <tr>
-        <td>$NYYYY$<br/>$NYY$<br/>$NMM$<br/>$NDD$<br/>$Nhh$<br/>$Nmm$</td> <td data-l10n-id="macro_desc_now">Current Year/Month/Day/Hour/Minute</td>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$hh$</td>
+        <td data-l10n-id="macro_desc_hour">Hour</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$mm$</td>
+        <td data-l10n-id="macro_desc_minute">Minute</td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr class="list-t">
+        <th colspan="3" data-l10n-id="macro_table_header_current_time">Current time macros</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$NYYYY$</td>
+        <td data-l10n-id="macro_desc_year">Year</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$NYY$</td>
+        <td data-l10n-id="macro_desc_year_short">Year (short)</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$NMM$</td>
+        <td data-l10n-id="macro_desc_month">Month</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$NDD$</td>
+        <td data-l10n-id="macro_desc_day">Day</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$Nhh$</td>
+        <td data-l10n-id="macro_desc_hour">Hour</td>
+      </tr>
+      <tr>
+        <td><button class="copy-btn">📋</button></td>
+        <td>$Nmm$</td>
+        <td data-l10n-id="macro_desc_minute">Minute</td>
       </tr>
     </tbody>
   </table>

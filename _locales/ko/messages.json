@@ -8,6 +8,8 @@
   "options_macro_body": { "message": "리네임 매크로 (본문)" },
   "options_macro_image": { "message": "리네임 매크로 (사진)" },
   "options_macro_attachment": { "message": "리네임 매크로 (첨부파일)" },
+  "options_macro_list": { "message": "List of macros" },
+  "options_macro_help": { "message": "To copy a macro, click the icon to the left of it." },
   "options_save_button": { "message": "저장" },
   "options_reload_button": { "message": "새로고침" },
   "options_reset_button": { "message": "초기화" },
@@ -18,6 +20,11 @@
   "macro_description": { "message": "설명" },
   "macro_table_header_macro": { "message": "매크로" },
   "macro_table_header_description": { "message": "설명" },
+  "macro_table_header_general": { "message": "General macros" },
+  "macro_table_header_image": { "message": "Image macros" },
+  "macro_table_header_attachment": { "message": "Attachment macros" },
+  "macro_table_header_publication_time": { "message": "Publication time macros" },
+  "macro_table_header_current_time": { "message": "Current time macros" },
   "macro_desc_platform": { "message": "플랫폼의 이름" },
   "macro_desc_user_name": { "message": "User의 이름" },
   "macro_desc_user_id": { "message": "User ID" },
@@ -27,6 +34,10 @@
   "macro_desc_img_number": { "message": "이미지 번호" },
   "macro_desc_img_name": { "message": "Original image name (if specified in URL)" },
   "macro_desc_attach_name": { "message": "첨부파일의 이름" },
-  "macro_desc_date": { "message": "공개 연월일시분" },
-  "macro_desc_now": { "message": "현재 연월일시분" }
+  "macro_desc_year": { "message": "Year" },
+  "macro_desc_year_short": { "message": "Year (short)" },
+  "macro_desc_month": { "message": "Month" },
+  "macro_desc_day": { "message": "Day" },
+  "macro_desc_hour": { "message": "Hour" },
+  "macro_desc_minute": { "message": "Minute" }
 }

@@ -102,3 +102,30 @@ document.getElementById('removedupbyname').addEventListener('click', function(ev
     }
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('.copy-btn');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const row = btn.closest('tr');
+      const textToCopy = row.cells[1].textContent.trim();
+
+      const el = document.createElement('textarea');
+      el.value = textToCopy;
+      document.body.appendChild(el);
+      el.select();
+
+      try {
+        document.execCommand('copy');
+        const originalIcon = btn.textContent;
+        btn.textContent = '✅';
+        setTimeout(() => btn.textContent = originalIcon, 1000);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+
+      document.body.removeChild(el);
+    });
+  });
+});

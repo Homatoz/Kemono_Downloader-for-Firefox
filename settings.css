@@ -1,3 +1,6 @@
+body{
+    font-size: 15px;
+}
 label, input[type='checkbox'] {
     cursor: pointer;
     user-select: none;
@@ -14,17 +17,47 @@ label, input[type='checkbox'] {
     border-collapse: collapse;
     border: 2px;
     background-color: #ffe9b1;
+    margin-top: 10px;
 }
 .list-t{
     background-color: #f8a63a;
     border: 2px #ffffff;
 }
-td{
-    padding: 1px 5px;
+thead:first-of-type tr:first-child th {
+    background-color: #e29830;
 }
 tbody tr:nth-child(even){
     background-color: #FCD994;
 }
-body{
-    font-size: 15px;
+td, th {
+    padding: 1px 5px;
+}
+.copy-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: none;
+
+    font-size: 1.2em;
+    transition: transform 0.1s ease-in-out;
+    opacity: 0.7;
+
+    /* Create a fixed size button */
+    width: 24px;
+    text-align: center;
+    display: inline-block;
+}
+/* Create a fixed size cell with a button */
+td:first-child {
+    width: 30px;
+    white-space: nowrap;
+}
+.copy-btn:hover {
+    transform: scale(1.2);
+    opacity: 1;
+}
+.copy-btn:active {
+    transform: scale(0.9);
 }

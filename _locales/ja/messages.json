@@ -8,6 +8,8 @@
   "options_macro_body": { "message": "リネームマクロ (本文)" },
   "options_macro_image": { "message": "リネームマクロ (画像)" },
   "options_macro_attachment": { "message": "リネームマクロ (添付ファイル)" },
+  "options_macro_list": { "message": "List of macros" },
+  "options_macro_help": { "message": "To copy a macro, click the icon to the left of it." },
   "options_save_button": { "message": "保存" },
   "options_reload_button": { "message": "再読み込み" },
   "options_reset_button": { "message": "リセット" },
@@ -18,6 +20,11 @@
   "macro_description": { "message": "説明" },
   "macro_table_header_macro": { "message": "マクロ" },
   "macro_table_header_description": { "message": "説明" },
+  "macro_table_header_general": { "message": "General macros" },
+  "macro_table_header_image": { "message": "Image macros" },
+  "macro_table_header_attachment": { "message": "Attachment macros" },
+  "macro_table_header_publication_time": { "message": "Publication time macros" },
+  "macro_table_header_current_time": { "message": "Current time macros" },
   "macro_desc_platform": { "message": "プラットフォーム名" },
   "macro_desc_user_name": { "message": "ユーザー名" },
   "macro_desc_user_id": { "message": "User ID" },
@@ -27,6 +34,10 @@
   "macro_desc_img_number": { "message": "画像の番号" },
   "macro_desc_img_name": { "message": "Original image name (if specified in URL)" },
   "macro_desc_attach_name": { "message": "添付ファイル名" },
-  "macro_desc_date": { "message": "公開 年/月/日/時/分" },
-  "macro_desc_now": { "message": "現在 年/月/日/時/分" }
+  "macro_desc_year": { "message": "Year" },
+  "macro_desc_year_short": { "message": "Year (short)" },
+  "macro_desc_month": { "message": "Month" },
+  "macro_desc_day": { "message": "Day" },
+  "macro_desc_hour": { "message": "Hour" },
+  "macro_desc_minute": { "message": "Minute" }
 }
