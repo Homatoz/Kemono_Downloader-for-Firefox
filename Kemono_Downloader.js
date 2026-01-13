@@ -61,16 +61,26 @@ function dlText() {
   }
 }
 
-function collectImages() {
-  const thumbs = document.querySelectorAll('.post__thumbnail');
+function collectContent(type) {
+  const isImages = type === 'images';
+  const selector = isImages ? '.post__thumbnail' : '.post__attachment';
+  const items = document.querySelectorAll(selector);
+
   const seenUrls = new Set();
   const seenNames = new Set();
   let validIndex = 1;
 
-  return Array.from(thumbs).reduce((acc, thumb) => {
-    const link = thumb.querySelector('a');
-    const img = thumb.querySelector('img');
-    const rawUrl = link ? link.getAttribute('href') : (img ? img.getAttribute('src') : null);
+  return Array.from(items).reduce((acc, item) => {
+    let rawUrl = null;
+
+    if (isImages) {
+      const link = item.querySelector('a');
+      const img = item.querySelector('img');
+      rawUrl = link ? link.getAttribute('href') : (img ? img.getAttribute('src') : null);
+    } else {
+      const fileLink = item.querySelector('.post__attachment-link');
+      rawUrl = fileLink ? fileLink.getAttribute('href') : null;
+    }
 
     if (!rawUrl) return acc;
 
@@ -78,21 +88,43 @@ function collectImages() {
 
     if (removedupbyurl && seenUrls.has(urlPart)) return acc;
 
-    const extension = urlPart.split('.').pop();
+    //Extract filename from URL, check position of dot, get extension if esists, not in start or end
+    const urlLastSlash = urlPart.lastIndexOf('/');
+    const fileNameFromUrl = urlPart.substring(urlLastSlash + 1);
+    const urlDotIdx = fileNameFromUrl.lastIndexOf('.');
 
-    let fileName = (namePart && namePart.includes('f='))
+    let extension = (urlDotIdx > 0 && urlDotIdx < fileNameFromUrl.length - 1)
+      ? fileNameFromUrl.substring(urlDotIdx)
+      : '.txt';
+
+    let rawFileName = (namePart && namePart.includes('f='))
       ? namePart.split('f=')[1]
       : `file_${validIndex}.${extension}`;
 
-    if (removedupbyname && seenNames.has(fileName)) return acc;
+    // try - just for peace of mind in case of broken URLs
+    try {
+      rawFileName = decodeURIComponent(rawFileName).replace(/\+/g, ' ');
+    } catch (e) {}
+
+    //The same extension check and extraction, as for URL
+    let finalNameOnly = rawFileName;
+    const lastDotIndex = rawFileName.lastIndexOf('.');
+
+    if (lastDotIndex > 0 && lastDotIndex < rawFileName.length - 1) {
+      extension = rawFileName.substring(lastDotIndex);
+      finalNameOnly = rawFileName.substring(0, lastDotIndex);
+    }
+
+    // Check and add FULL filename, not part
+    if (removedupbyname && seenNames.has(rawFileName)) return acc;
 
     if (removedupbyurl) seenUrls.add(urlPart);
-    if (removedupbyname) seenNames.add(fileName);
+    if (removedupbyname) seenNames.add(rawFileName);
 
     acc.push({
       index: validIndex++,
       url: urlPart,
-      name: fileName,
+      name: finalNameOnly,
       extension: extension
     });
 
@@ -101,7 +133,7 @@ function collectImages() {
 }
 
 async function dlImages() {
-  arrImages = collectImages();
+  arrImages = collectContent('images');
   for (const image of arrImages) {
     try {
       const filename = getImageSavePathAndName(image);
@@ -204,8 +236,9 @@ function sanitizeText(text, includeDot = true) {
 function getImageSavePathAndName(image) {
   let query;
   query = convertMacrosInPath(macro2);
-  query = query.replaceAll("$Counter$", ("" + (image.index)).padStart(3, "0") + "." + image.extension);
+  query = query.replaceAll("$Counter$", ("" + (image.index)).padStart(3, "0"));
   query = query.replaceAll("$ImageName$", image.name);
+  query = query + image.extension;
   return query;
 }
 
