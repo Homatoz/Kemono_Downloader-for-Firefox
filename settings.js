@@ -19,14 +19,19 @@ function save_settings() {
   var txt = document.getElementById("txt").checked;
   var img = document.getElementById("img").checked;
   var attr = document.getElementById("attr").checked;
+  var removedupbyurl = document.getElementById("removedupbyurl").checked;
+  var removedupbyname = document.getElementById("removedupbyname").checked;
   var macro = document.getElementById("macro").value;
   var macro2 = document.getElementById("macro2").value;
   var macro3 = document.getElementById("macro3").value;
+
   chrome.storage.local.set(
     {
       savetext: txt,
       saveimg: img,
       saveattr: attr,
+      removedupbyurl: removedupbyurl,
+      removedupbyname: removedupbyname,
       macro: macro,
       macro2: macro2,
       macro3: macro3,
@@ -39,11 +44,13 @@ function save_settings() {
 
 function load_settings() {
   chrome.storage.local.get(
-    ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3"],
+    ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3", "removedupbyurl", "removedupbyname"],
     function (load) {
       document.getElementById("txt").checked = load.savetext;
       document.getElementById("img").checked = load.saveimg;
       document.getElementById("attr").checked = load.saveattr;
+      document.getElementById("removedupbyurl").checked = load.removedupbyurl;
+      document.getElementById("removedupbyname").checked = load.removedupbyname;
       document.getElementById("macro").value = load.macro;
       document.getElementById("macro2").value = load.macro2;
       document.getElementById("macro3").value = load.macro3;
@@ -67,6 +74,8 @@ function initialize_settings() {
   document.getElementById("txt").checked = true;
   document.getElementById("img").checked = true;
   document.getElementById("attr").checked = true;
+  document.getElementById("removedupbyurl").checked = true;
+  document.getElementById("removedupbyname").checked = false;
   document.getElementById("macro").value =
     "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/__main__text__";
   document.getElementById("macro2").value =
@@ -83,3 +92,13 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("save").addEventListener("click", save_settings);
 document.getElementById("reset").addEventListener("click", initialize_settings);
 document.getElementById("reload").addEventListener("click", load_settings);
+
+document.getElementById('removedupbyname').addEventListener('click', function(event) {
+  if (this.checked) {
+    const confirmText = chrome.i18n.getMessage("confirm_remove_dupes_by_name");
+
+    if (!confirm(confirmText)) {
+      event.preventDefault();
+    }
+  }
+});

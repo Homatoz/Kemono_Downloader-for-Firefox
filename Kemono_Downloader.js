@@ -32,10 +32,6 @@ function getAttachmentsCount() {
   return document.querySelectorAll(".post__attachment").length;
 }
 
-function getImageURL(getnum) {
-  return document.querySelectorAll(".post__thumbnail")[getnum].querySelector("a").getAttribute("href");
-}
-
 function getAttachmentURL(getnum) {
   return document.querySelectorAll(".post__attachment")[getnum].querySelector("a").getAttribute("href");
 }
@@ -65,18 +61,56 @@ function dlText() {
   }
 }
 
+function collectImages() {
+  const thumbs = document.querySelectorAll('.post__thumbnail');
+  const seenUrls = new Set();
+  const seenNames = new Set();
+  let validIndex = 1;
+
+  return Array.from(thumbs).reduce((acc, thumb) => {
+    const link = thumb.querySelector('a');
+    const img = thumb.querySelector('img');
+    const rawUrl = link ? link.getAttribute('href') : (img ? img.getAttribute('src') : null);
+
+    if (!rawUrl) return acc;
+
+    const [urlPart, namePart] = rawUrl.split('?');
+
+    if (removedupbyurl && seenUrls.has(urlPart)) return acc;
+
+    const extension = urlPart.split('.').pop();
+
+    let fileName = (namePart && namePart.includes('f='))
+      ? namePart.split('f=')[1]
+      : `file_${validIndex}.${extension}`;
+
+    if (removedupbyname && seenNames.has(fileName)) return acc;
+
+    if (removedupbyurl) seenUrls.add(urlPart);
+    if (removedupbyname) seenNames.add(fileName);
+
+    acc.push({
+      index: validIndex++,
+      url: urlPart,
+      name: fileName,
+      extension: extension
+    });
+
+    return acc;
+  }, []);
+}
+
 async function dlImages() {
-  const count = getImagesCount();
-  for (let num = 0; num < count; num++) {
+  arrImages = collectImages();
+  for (const image of arrImages) {
     try {
-      const url = getImageURL(num);
-      const filename = getImageSavePathAndName(num) + "." + getFileExtension(url);
+      const filename = getImageSavePathAndName(image);
       await new Promise((resolve, reject) => {
-        dlFile("download", url, filename);
-        resolve();
-      }, 100); // 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
+        dlFile("download", image.url, filename);
+        setTimeout(resolve, 150);// 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
+      });
     } catch (error) {
-      console.error(`dlImages: Error processing image ${num + 1}:`, error);
+      console.error(`dlImages: Error processing image ${image.index}:`, error);
       // 오류 발생 시 다음 이미지로 계속 진행할지 결정
     }
   }
@@ -167,11 +201,11 @@ function sanitizeText(text, includeDot = true) {
   return text.replace(pattern, (match) => charMap[match]).trim();
 }
 
-
-function getImageSavePathAndName(num) {
+function getImageSavePathAndName(image) {
   let query;
   query = convertMacrosInPath(macro2);
-  query = query.replaceAll("$Counter$", ("" + (num + 1)).padStart(3, "0"));
+  query = query.replaceAll("$Counter$", ("" + (image.index)).padStart(3, "0") + "." + image.extension);
+  query = query.replaceAll("$ImageName$", image.name);
   return query;
 }
 
@@ -186,10 +220,6 @@ function getAttachmentSavePathAndName(name) {
   query = convertMacrosInPath(macro3);
   query = query.replaceAll("$AttachmentName$", name);
   return query;
-}
-
-function getFileExtension(URL) {
-  return URL.split(".").at(-1);
 }
 
 function dlFile(type, url, filename) {
@@ -224,6 +254,8 @@ async function main(str) {
   globalThis.macro = str.macro;
   globalThis.macro2 = str.macro2;
   globalThis.macro3 = str.macro3;
+  globalThis.removedupbyurl = str.removedupbyurl;
+  globalThis.removedupbyname = str.removedupbyname;
 
   if (str.saveimg == true) {
     await dlImages(); // dlImages의 모든 요청 전송이 끝날 때까지 대기
@@ -238,7 +270,7 @@ async function main(str) {
 
 chrome.runtime.onMessage.addListener(function (request, sender) {
   chrome.storage.local.get(
-    ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3"],
+    ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3", "removedupbyurl", "removedupbyname"],
     function (str) {
       if (str.macro == undefined) {
         alert("kemono-downloader Ver 1.2.0：\n확장 프로그램 설정을 해주세요.\nPlease save the settings.\n設定を保存してください。\n");

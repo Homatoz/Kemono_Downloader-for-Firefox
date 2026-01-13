@@ -15,6 +15,16 @@
       <input type="checkbox" id="img" name="img">
       <span data-l10n-id="options_download_images">Download images</span>
     </label><br>
+    <div style="margin-left: 20px;">
+      <label for="removedupbyurl">
+        <input type="checkbox" id="removedupbyurl" name="removedupbyurl">
+        <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
+      </label><br>
+      <label for="removedupbyname">
+        <input type="checkbox" id="removedupbyname" name="removedupbyname">
+        <span data-l10n-id="options_remove_duplicates_by_name">Remove duplicates by name</span> <span style="color: red;" data-l10n-id="warning_remove_duplicates_by_name">(Use with caution)</span>
+      </label>
+    </div>
     <label for="attr">
       <input type="checkbox" id="attr" name="attr">
       <span data-l10n-id="options_download_attachments">Download attachments</span>
@@ -65,6 +75,9 @@
       </tr>
       <tr>
         <td>$Counter$</td> <td data-l10n-id="macro_desc_img_number">Image number</td>
+      </tr>
+      <tr>
+        <td>$ImageName$</td> <td data-l10n-id="macro_desc_img_name">Original image name (if specified in URL)</td>
       </tr>
       <tr>
         <td>$AttachmentName$</td> <td data-l10n-id="macro_desc_attach_name">Name of the attachment</td>
