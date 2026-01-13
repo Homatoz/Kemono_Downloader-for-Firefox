@@ -45,7 +45,7 @@ function dlText() {
   const text = getText();
   if (text) {
     const blob2 = new Blob([text], { type: "text/plain" });
-    filename = getTextSavePathAndName() + ".txt";
+    filename = getTextSavePathAndName();
 
     if (isChromium() == true) {
       const blob3 = URL.createObjectURL(blob2);
@@ -133,11 +133,11 @@ function collectContent(type) {
 }
 
 async function dlImages() {
-  arrImages = collectContent('images');
+  const arrImages = collectContent('images');
   for (const image of arrImages) {
     try {
       const filename = getImageSavePathAndName(image);
-      await new Promise((resolve, reject) => {
+      await new Promise((resolve) => {
         dlFile("download", image.url, filename);
         setTimeout(resolve, 150);// 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
       });
@@ -149,27 +149,17 @@ async function dlImages() {
 }
 
 async function dlAttachments() {
-  const attachments = document.querySelectorAll(".post__attachment");
-  const count = attachments.length;
-
-  for (let num = 0; num < count; num++) {
+  const arrAttachments = collectContent('attachments');
+  for (const attachment of arrAttachments) {
     try {
-      const attachmentElement = attachments[num].querySelector("a");
-      const url = attachmentElement.getAttribute("href");
-      const filename = attachmentElement.getAttribute("download");
-      if (!url || !filename) {
-        console.warn(`dlAttachments: 첨부 파일 ${num + 1}의 URL 또는 파일 이름을 찾을 수 없습니다. 건너뜁니다.`);
-        continue; // URL이나 파일 이름이 없으면 다음 반복으로 건너뜁니다
-      }
-
-      full_path_filename = getAttachmentSavePathAndName(filename);
-
+      const filename = getAttachmentSavePathAndName(attachment);
       await new Promise((resolve) => {
-          dlFile("download", url, full_path_filename);
-          setTimeout(resolve, 150); // 다음 반복 시작 전 150ms 대기
+        dlFile("download", attachment.url, filename);
+        setTimeout(resolve, 150);// 지연 시간을 조금 늘려볼 수 있습니다 (예: 200ms)
       });
     } catch (error) {
-      console.error(`dlAttachments: 첨부 파일 ${num + 1} 처리 중 오류 발생:`, error);
+      console.error(`dlAttachments: 첨부 파일 ${attachment.index} 처리 중 오류 발생:`, error);
+      // 오류 발생 시 다음 이미지로 계속 진행할지 결정
     }
   }
 }
@@ -192,6 +182,7 @@ function convertMacrosInPath(query) {
   query = query.replaceAll("$Title$", getTitle());
   query = query.replaceAll("$PageID$", getPageID());
   query = query.replaceAll("$ImagesCount$", getImagesCount());
+  query = query.replaceAll("$AttsCount$", getAttachmentsCount());
   query = query.replaceAll("$YYYY$", getDate(1));
   query = query.replaceAll("$YY$", getDate(1).slice(-2));
   query = query.replaceAll("$MM$", getDate(2));
@@ -236,7 +227,7 @@ function sanitizeText(text, includeDot = true) {
 function getImageSavePathAndName(image) {
   let query;
   query = convertMacrosInPath(macro2);
-  query = query.replaceAll("$Counter$", ("" + (image.index)).padStart(3, "0"));
+  query = query.replaceAll("$ImageCounter$", ("" + (image.index)).padStart(3, "0"));
   query = query.replaceAll("$ImageName$", image.name);
   query = query + image.extension;
   return query;
@@ -244,14 +235,16 @@ function getImageSavePathAndName(image) {
 
 function getTextSavePathAndName() {
   let query;
-  query = convertMacrosInPath(macro);
+  query = convertMacrosInPath(macro) + ".txt";
   return query;
 }
 
-function getAttachmentSavePathAndName(name) {
+function getAttachmentSavePathAndName(attachment) {
   let query;
   query = convertMacrosInPath(macro3);
-  query = query.replaceAll("$AttachmentName$", name);
+  query = query.replaceAll("$AttCounter$", ("" + (attachment.index)).padStart(3, "0"));
+  query = query.replaceAll("$AttName$", attachment.name);
+  query = query + attachment.extension;
   return query;
 }
 
