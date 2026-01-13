@@ -273,7 +273,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3", "removedupbyurl", "removedupbyname"],
     function (str) {
       if (str.macro == undefined) {
-        alert("kemono-downloader Ver 1.2.0：\n확장 프로그램 설정을 해주세요.\nPlease save the settings.\n設定を保存してください。\n");
+        const version = browser.runtime.getManifest().version;
+        const message = browser.i18n.getMessage("alert_first_run", [version]);
+        alert(message);
         return chrome.runtime.sendMessage({ type: "set" });
       } else {
         main(str);

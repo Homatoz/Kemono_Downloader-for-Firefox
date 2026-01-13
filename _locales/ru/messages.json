@@ -39,5 +39,6 @@
   "macro_desc_month": { "message": "Месяц" },
   "macro_desc_day": { "message": "День" },
   "macro_desc_hour": { "message": "Час" },
-  "macro_desc_minute": { "message": "Минута" }
+  "macro_desc_minute": { "message": "Минута" },
+  "alert_first_run": { "message": "kemono-downloader Ver $1：Пожалуйста, сохраните настройки." }
 }
