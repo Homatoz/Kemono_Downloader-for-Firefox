@@ -103,7 +103,6 @@ document.getElementById('cbRemoveDupByName').addEventListener('click', function(
   }
 });
 
-
 // Save and Cancel buttons for inputs
 document.querySelectorAll('input[type="text"]').forEach(input => {
   // Create div - flex 100% width
@@ -114,6 +113,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
   wrapper.style.boxSizing = 'border-box';
 
   input.style.flexGrow = '1'; //Input fill all free space
+  input.style.marginLeft = '1px';
 
   // Move input in div
   input.parentNode.insertBefore(wrapper, input);
@@ -125,7 +125,40 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
   btnContainer.style.flexShrink = '0'; // Don't shrink buttons
 
   const btnSave = createBtn('💾', () => {
-    chrome.storage.local.set({ [input.id]: input.value });
+    // Before saving, the path is cleared and a notification is displayed if the path has changed.
+    const rawValue = input.value;
+    const cleanValue = sanitizeMacroPath(rawValue);
+
+    if (rawValue.trim() !== cleanValue) {
+      input.value = cleanValue; // The clear path is displayed in the field.
+
+      if (typeof browser !== 'undefined' && browser.notifications) {
+        browser.notifications.create({
+          "type": "basic",
+          "iconUrl": "icons/icon-48.png",
+          "title": chrome.i18n.getMessage("notify_path_cleaned_title"),
+          "message": chrome.i18n.getMessage("notify_path_cleaned_message", [cleanValue])
+        });
+      } else {
+        console.log(chrome.i18n.getMessage("notify_path_cleaned_message", [cleanValue]));
+      }
+    }
+
+    chrome.storage.local.set({ [input.id]: cleanValue }, () => {
+      // Some visual effects.
+      const originalBg = input.style.backgroundColor;
+      const originalShadow = input.style.boxShadow;
+
+      input.style.transition = 'background-color 0.4s ease, box-shadow 0.4s ease';
+
+      input.style.backgroundColor = '#d4edda';
+      input.style.boxShadow = 'inset 0 0 0 1px #28a745';
+
+      setTimeout(() => {
+        input.style.backgroundColor = originalBg;
+        input.style.boxShadow = originalShadow;
+      }, 1000);
+    });
   });
 
   const btnReset = createBtn('\u21A9\uFE0E', () => {
@@ -145,6 +178,23 @@ function createBtn(icon, onClick) {
   btn.style.marginLeft = '1px';
   btn.onclick = onClick;
   return btn;
+}
+
+function sanitizeMacroPath(inputPath) {
+    const reservedNames = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i;
+
+    const cleanPath = inputPath
+        .replace(/^[a-z]+:\/+/i, '')
+        .replace(/\\/g, '/')
+        .split('/')
+        .filter(part => {
+            const p = part.trim();
+            return Boolean(p) && p !== '..' && p !== '.' && !reservedNames.test(p);
+        })
+        .join('/')
+        .replace(/[:*?"<>|]/g, '_');
+
+    return cleanPath || 'default_filename.txt';
 }
 
 // Listener for changes in the storage for real-time synchronization

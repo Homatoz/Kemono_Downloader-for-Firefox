@@ -10,10 +10,7 @@
   "options_macro_attachment": { "message": "Rename Macro (Attachment)" },
   "options_macro_list": { "message": "List of macros" },
   "options_macro_help": { "message": "To copy a macro, click the icon to the left of it." },
-  "options_save_button": { "message": "Save" },
-  "options_reload_button": { "message": "Reload" },
   "options_reset_button": { "message": "Reset to default settings" },
-  "options_save_notice": { "message": "All changes will be applied by clicking Save." },
   "confirm_remove_dupes_by_name": { "message": "Are you sure? Matching file names doesn't guarantee the file contents are the same." },
   "warning_remove_duplicates_by_name": { "message": "(Use with caution)" },
   "macro_macro": { "message": "Macro" },
@@ -46,5 +43,7 @@
   "macro_desc_minute": { "message": "Minute" },
   "alert_first_run": { "message": "kemono-downloader Ver $1:\nThis is the first launch after the version update.\nThe default settings are used.\nPlease check and adjust them if necessary." },
   "popup_info_text": { "message": "Enabling \"Remove duplicates by name\" and changing file saving paths are available on the main settings page." },
-  "button_open_settings": { "message": "Open Settings" }
+  "button_open_settings": { "message": "Open Settings" },
+  "notify_path_cleaned_title": { "message": "The path has been changed" },
+  "notify_path_cleaned_message": { "message": "Invalid characters removed. Final path: $1"}
 }

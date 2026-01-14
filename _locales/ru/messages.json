@@ -10,10 +10,7 @@
   "options_macro_attachment": { "message": "Макрос переименования (Вложения)" },
   "options_macro_list": { "message": "Список макросов" },
   "options_macro_help": { "message": "Чтобы скопировать макрос, щелкните по иконке слева от него." },
-  "options_save_button": { "message": "Сохранить" },
-  "options_reload_button": { "message": "Перезагрузить" },
   "options_reset_button": { "message": "Сбросить до настроек по умолчанию" },
-  "options_save_notice": { "message": "Все изменения будут применены при нажатии кнопки 'Сохранить'." },
   "confirm_remove_dupes_by_name": { "message": "Вы уверены? Совпадение имен файлов не гарантирует, что содержимое файлов также совпадает." },
   "warning_remove_duplicates_by_name": { "message": "(Использовать с осторожностью)" },
   "macro_macro": { "message": "Макрос" },
@@ -46,5 +43,7 @@
   "macro_desc_minute": { "message": "Минута" },
   "alert_first_run": { "message": "kemono-downloader Ver $1:\nЭто первый запуск после обновления версии.\nУстановлены настройки по умолчанию.\nПросьба проверить и, при необходимости, скорректировать настройки." },
   "popup_info_text": { "message": "Включение \"Удалять дубликаты по имени\" и изменение путей сохранения доступно на главной странице настроек." },
-  "button_open_settings": { "message": "Открыть настройки" }
+  "button_open_settings": { "message": "Открыть настройки" },
+  "notify_path_cleaned_title": { "message": "Путь изменен" },
+  "notify_path_cleaned_message": { "message": "Недопустимые символы удалены. Итоговый путь: $1"}
 }

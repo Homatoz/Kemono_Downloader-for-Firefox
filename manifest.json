@@ -24,6 +24,7 @@
     "storage",
     "tabs",
     "contextMenus",
+    "notifications",
     "*://kemono.cr/*"
   ],
   "web_accessible_resources": ["icon.svg"],
