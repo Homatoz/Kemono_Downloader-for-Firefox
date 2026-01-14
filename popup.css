@@ -1,0 +1,32 @@
+body {
+    width: 250px;
+    padding: 10px;
+    font-family: sans-serif;
+}
+.item {
+    margin-bottom: 8px;
+}
+.tips {
+    display: inline-block;
+    width: 100%;
+    text-align: justify;
+    font-size: 11px;
+    color: #666;
+    line-height: 1.3;
+}
+.separator {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+#open-settings {
+    width: 100%;
+    margin-top: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px;
+}
+.item label, 
+.item input[type="checkbox"] {
+    cursor: pointer;
+}

@@ -12,7 +12,7 @@
   "options_macro_help": { "message": "To copy a macro, click the icon to the left of it." },
   "options_save_button": { "message": "저장" },
   "options_reload_button": { "message": "새로고침" },
-  "options_reset_button": { "message": "초기화" },
+  "options_reset_button": { "message": "Reset to default settings" },
   "options_save_notice": { "message": "모든 변경 사항은 저장을 함으로써 적용됩니다." },
   "confirm_remove_dupes_by_name": { "message": "Are you sure? Matching file names doesn't guarantee the file contents are the same." },
   "warning_remove_duplicates_by_name": { "message": "(Use with caution)" },
@@ -44,5 +44,7 @@
   "macro_desc_day": { "message": "Day" },
   "macro_desc_hour": { "message": "Hour" },
   "macro_desc_minute": { "message": "Minute" },
-  "alert_first_run": { "message": "kemono-downloader Ver $1：확장 프로그램 설정을 해주세요." }
+  "alert_first_run": { "message": "kemono-downloader Ver $1:\nThis is the first launch after the version update.\nThe default settings are used.\nPlease check and adjust them if necessary." },
+  "popup_info_text": { "message": "Enabling \"Remove duplicates by name\" and changing file saving paths are available on the main settings page." },
+  "button_open_settings": { "message": "Open Settings" }
 }

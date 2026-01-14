@@ -7,44 +7,40 @@
 <body>
   <p class="main" data-l10n-id="options_download_options">Download Options</p>
   <div class="sub">
-    <label for="txt">
-      <input type="checkbox" id="txt" name="txt" >
+    <label for="cbDlText">
+      <input type="checkbox" id="cbDlText" name="cbDlText" >
       <span data-l10n-id="options_download_text">Download text</span>
     </label><br>
-    <label for ="img">
-      <input type="checkbox" id="img" name="img">
+    <label for ="cbDlImages">
+      <input type="checkbox" id="cbDlImages" name="cbDlImages">
       <span data-l10n-id="options_download_images">Download images</span>
     </label><br>
-    <label for="attr">
-      <input type="checkbox" id="attr" name="attr">
+    <label for="cbDlAttachments">
+      <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
       <span data-l10n-id="options_download_attachments">Download attachments</span>
     </label><br>
-    <label for="removedupbyurl">
-      <input type="checkbox" id="removedupbyurl" name="removedupbyurl">
+    <label for="cbRemoveDupByUrl">
+      <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
       <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
     </label><br>
-    <label for="removedupbyname">
-      <input type="checkbox" id="removedupbyname" name="removedupbyname">
+    <label for="cbRemoveDupByName">
+      <input type="checkbox" id="cbRemoveDupByName" name="cbRemoveDupByName">
       <span data-l10n-id="options_remove_duplicates_by_name">Remove duplicates by name</span> <span style="color: red;" data-l10n-id="warning_remove_duplicates_by_name">(Use with caution)</span>
     </label>
   </div>
 
   <br>
   <p class="main" data-l10n-id="options_macro_body">Rename Macro (Body)</p>
-  <input type="text" id="macro" size="60">
+  <input type="text" id="txtMacroText" size="60">
 
   <p class="main" data-l10n-id="options_macro_image">Rename Macro (Image)</p>
-  <input type="text" id="macro2" size="60">
+  <input type="text" id="txtMacroImages" size="60">
 
   <p class="main" data-l10n-id="options_macro_attachment">Rename Macro (Attachment)</p>
-  <input type="text" id="macro3"  size="60">
+  <input type="text" id="txtMacroAttachments" size="60">
 
   <p>
-    <button id="save" data-l10n-id="options_save_button">Save</button>
-    <button id="reload" data-l10n-id="options_reload_button">Reload</button>
-    <button id="reset" data-l10n-id="options_reset_button">Reset</button>
-    <br>
-    <span data-l10n-id="options_save_notice">All changes will be applied by clicking Save.</span><br>
+    <button id="reset" data-l10n-id="options_reset_button">Reset to default settings</button>
   </p>
   <div class="main" data-l10n-id="options_macro_list">List of macros</div>
   <div data-l10n-id="options_macro_help">To copy a macro, click the icon to the left of it.</div>

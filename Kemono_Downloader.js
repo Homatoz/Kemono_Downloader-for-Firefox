@@ -110,7 +110,7 @@ function collectContent(type) {
 
     const [urlPart, namePart] = rawUrl.split('?');
 
-    if (removedupbyurl && seenUrls.has(urlPart)) return acc;
+    if (cbRemoveDupByUrl && seenUrls.has(urlPart)) return acc;
 
     //Extract filename from URL, check position of dot, get extension if esists, not in start or end
     const urlLastSlash = urlPart.lastIndexOf('/');
@@ -140,10 +140,10 @@ function collectContent(type) {
     }
 
     // Check and add FULL filename, not part
-    if (removedupbyname && seenNames.has(rawFileName)) return acc;
+    if (cbRemoveDupByName && seenNames.has(rawFileName)) return acc;
 
-    if (removedupbyurl) seenUrls.add(urlPart);
-    if (removedupbyname) seenNames.add(rawFileName);
+    if (cbRemoveDupByUrl) seenUrls.add(urlPart);
+    if (cbRemoveDupByName) seenNames.add(rawFileName);
 
     acc.push({
       index: validIndex++,
@@ -161,7 +161,7 @@ function dlText() {
   const text = container ? container.innerText.trim() : null
   if (text) {
     const blob2 = new Blob([text], { type: "text/plain" });
-    filename = convertMacrosInPath(macro) + ".txt";
+    filename = convertMacrosInPath(txtMacroText) + ".txt";
 
     if (isChromium() == true) {
       const blob3 = URL.createObjectURL(blob2);
@@ -195,8 +195,8 @@ async function dlContent(type) {
 
 function getSavePathAndName(type, item) {
   const config = {
-    'image': { macro: macro2, prefix: 'Image' },
-    'attachment': { macro: macro3, prefix: 'Att' }
+    'image': { macro: txtMacroImages, prefix: 'Image' },
+    'attachment': { macro: txtMacroAttachments, prefix: 'Att' }
   };
 
   const { macro, prefix } = config[type];
@@ -254,28 +254,28 @@ function isChromium() {
 
 // Main functions
 async function main(str) {
-  globalThis.macro = str.macro;
-  globalThis.macro2 = str.macro2;
-  globalThis.macro3 = str.macro3;
-  globalThis.removedupbyurl = str.removedupbyurl;
-  globalThis.removedupbyname = str.removedupbyname;
+  globalThis.txtMacroText = str.txtMacroText;
+  globalThis.txtMacroImages = str.txtMacroImages;
+  globalThis.txtMacroAttachments = str.txtMacroAttachments;
+  globalThis.cbRemoveDupByUrl = str.cbRemoveDupByUrl;
+  globalThis.cbRemoveDupByName = str.cbRemoveDupByName;
 
-  if (str.savetext == true) {
+  if (str.cbDlText == true) {
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
   }
-  if (str.saveimg == true) {
+  if (str.cbDlImages == true) {
     await dlContent('image'); // dlImages의 모든 요청 전송이 끝날 때까지 대기
   }
-  if (str.saveattr == true) {
+  if (str.cbDlAttachments == true) {
     await dlContent('attachment'); // dlAttachments의 모든 요청 전송이 끝날 때까지 대기
   }
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender) {
   chrome.storage.local.get(
-    ["savetext", "saveimg", "saveattr", "macro", "macro2", "macro3", "removedupbyurl", "removedupbyname"],
+    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl", "cbRemoveDupByName"],
     function (str) {
-      if (str.macro == undefined) {
+      if (str.txtMacroText == undefined) {
         const version = browser.runtime.getManifest().version;
         const message = browser.i18n.getMessage("alert_first_run", [version]);
         alert(message);
