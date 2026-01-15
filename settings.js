@@ -13,6 +13,61 @@ const MACRO_CONFIG = {
   }
 };
 
+// Settings for attaching icons.
+// The key is the "id" of the <label> tag. It must always start with "lbl".
+// The value object contains the following data:
+// containerClass: A required parameter. Contains the class name assigned to the <div> wrapper around the label and icons.
+//                 It can be empty, in which case the "field-header" base class style will be applied.
+// info:           If present, an information icon will be attached to the label. The value of this parameter is an entry from the localization file,
+//                 the text of which will be displayed in the tooltip. The text may contain HTML tags.
+// warning:        If present, a warning icon will be attached to the label. This parameter is currently only used in the <label>+<input> combination
+//                 to display an error. The <input> "id" must match the <label> "id", but begin with "txt". The value of this parameter is an entry
+//                 from the localization file, the text of which will be displayed in the tooltip. The text may contain HTML tags.
+const tooltipRegistry = {
+  "lblDlOptions": {
+    containerClass: "field-header-txt"
+  },
+  "lblDlText": {
+    info: "help_download_text",
+    containerClass: "field-header-cb"
+  },
+  "lblDlImages": {
+    info: "help_download_images",
+    containerClass: "field-header-cb"
+  },
+  "lblDlAttachment": {
+    info: "help_download_attachments",
+    containerClass: "field-header-cb"
+  },
+  "lblRemoveDupByUrl": {
+    info: "help_remove_duplicates_by_url",
+    containerClass: "field-header-cb"
+  },
+  "lblRemoveDupByName": {
+    info: "warning_remove_duplicates_by_name",
+    containerClass: "field-header-cb"
+  },
+  "lblMacroText": {
+    info: "help_macro_body",
+    warning: "warning_save_problems",
+    containerClass: "field-header-txt"
+  },
+  "lblMacroImages": {
+    info: "help_macro_image",
+    warning: "warning_save_problems",
+    containerClass: "field-header-txt"
+  },
+  "lblMacroAttachments": {
+    info: "help_macro_attachment",
+    warning: "warning_save_problems",
+    containerClass: "field-header-txt"
+  },
+  "lblMacroList": {
+    info: "help_macro_list",
+    containerClass: "field-header-txt"
+  }
+};
+
 function localizeHtmlPage() {
   // data-l10n-id 속성을 가진 모든 요소를 찾습니다.
   const localizableElements = document.querySelectorAll('[data-l10n-id]');
@@ -99,6 +154,12 @@ function initialize_settings() {
   document.getElementById("txtMacroAttachments").value =
     "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$AttName$";
   save_settings();
+  // Hide warning icons when the reset to defaults button is pressed.
+  for (const [id, config] of Object.entries(tooltipRegistry)) {
+    if (config.warning) {
+      toggleWarning(id, false);
+    }
+  }
 }
 
 // Checkboxes autosave
@@ -165,6 +226,8 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     if (errorPath) {
       input.value = errorPath;
 
+      toggleWarning(input.id, true);
+
       // "Bad" visual effects.
       input.style.transition = 'background-color 0.4s ease, box-shadow 0.4s ease';
       input.style.backgroundColor = '#f8d7da';
@@ -190,6 +253,8 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     }
 
     chrome.storage.local.set({ [input.id]: cleanValue }, () => {
+      toggleWarning(input.id, false);
+
       // "Good" visual effects.
       const originalBg = input.style.backgroundColor;
       const originalShadow = input.style.boxShadow;
@@ -207,6 +272,8 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
   });
 
   const btnReset = createBtn('\u21A9\uFE0E', () => {
+    toggleWarning(input.id, false);
+
     chrome.storage.local.get(input.id, (res) => {
       if (res[input.id] !== undefined) input.value = res[input.id];
     });
@@ -310,9 +377,57 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+function initTooltips() {
+  const i18n = (typeof browser !== 'undefined') ? browser.i18n : chrome.i18n;
+
+  for (const [id, config] of Object.entries(tooltipRegistry)) {
+    const label = document.getElementById(id);
+    if (!label) continue;
+
+    const container = document.createElement('div');
+    container.className = `field-header ${config.containerClass || ''}`;
+    label.parentNode.insertBefore(container, label);
+    container.appendChild(label);
+
+    // Adding an information icon
+    if (config.info) {
+      const tooltipSpan = document.createElement('span');
+      tooltipSpan.className = 'custom-tooltip-wrapper';
+      tooltipSpan.innerHTML = `
+        <span class="help-icon">ⓘ</span>
+        <div class="tooltip-popup">${i18n.getMessage(config.info)}</div>
+      `;
+      container.appendChild(tooltipSpan);
+    }
+
+    // Adding a warning icon
+    if (config.warning) {
+      const warnSpan = document.createElement('span');
+      warnSpan.className = 'custom-tooltip-wrapper warning-style';
+      warnSpan.id = `warning-icon-${id}`; //Create an id for the icon with a name like "warning-lblText" to manage it.
+      warnSpan.style.display = 'none'; // Hide by default, we don't have errors
+      warnSpan.innerHTML = `
+        <span class="help-icon">⚠</span>
+        <div class="tooltip-popup">${i18n.getMessage(config.warning)}</div>
+      `;
+      container.appendChild(warnSpan);
+    }
+  }
+}
+
+function toggleWarning(inputId, show) {
+    const labelId = inputId.replace('txt', 'lbl');
+    const warningIcon = document.getElementById(`warning-icon-${labelId}`);
+
+    if (warningIcon) {
+        warningIcon.style.display = show ? 'inline-flex' : 'none';
+    }
+}
+
 document.getElementById("reset").addEventListener("click", initialize_settings);
 
 document.addEventListener("DOMContentLoaded", () => {
   localizeHtmlPage(); // UI 텍스트를 먼저 지역화합니다.
   load_settings();    // 그 다음 설정을 불러옵니다.
+  initTooltips();
 });

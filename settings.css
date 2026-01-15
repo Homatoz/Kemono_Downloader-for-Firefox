@@ -12,7 +12,25 @@ label, input[type='checkbox'] {
     }
 .sub{
     font-size: 14px;
+    margin-bottom: 5px;
 }
+.macro{
+    margin-bottom: 5px;
+}
+[data-l10n-id] {
+    white-space: pre-line;
+}
+.separator {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 5px 0;
+}
+#reset {
+  display: block;
+  width: fit-content;
+}
+
+/*Table of macros*/
 .macrolist{
     border-collapse: collapse;
     border: 2px;
@@ -32,6 +50,8 @@ tbody tr:nth-child(even){
 td, th {
     padding: 1px 5px;
 }
+
+/*Buttons in table of macros*/
 .copy-btn {
     background: none;
     border: none;
@@ -49,7 +69,7 @@ td, th {
     text-align: center;
     display: inline-block;
 }
-/* Create a fixed size cell with a button */
+    /* Create a fixed size cell with a button */
 td:first-child {
     width: 30px;
     white-space: nowrap;
@@ -62,6 +82,103 @@ td:first-child {
     transform: scale(0.9);
 }
 
-[data-l10n-id] {
-    white-space: pre-line;
+/*Icons and tooltips*/
+label.main {
+  display: inline !important; 
+  width: auto !important;
+  margin: 0 !important;
+}
+.field-header {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.field-header-txt {
+  margin-bottom: 3px;
+}
+.field-header-cb {
+  margin-bottom: 0px;
+}
+.custom-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  cursor: help;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.help-icon {
+  width: 18px;
+  height: 18px;
+  
+  background: #ffffff;
+  color: #0060df;
+  
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  font-style: normal;
+  line-height: 0;
+  
+  padding-bottom: 1px; 
+}
+.warning-style .help-icon {
+  color: #d70022;
+  font-size: 16px;
+}
+.custom-tooltip-wrapper + .custom-tooltip-wrapper {
+  margin-left: 4px;
+}
+.tooltip-popup {
+  visibility: hidden;
+  opacity: 0;
+  
+  position: absolute;
+  top: calc(100% + 10px); 
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px);
+  
+  width: 280px;
+  padding: 15px;
+  background: #ffffff;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border: 1px solid #d1d1d1;
+  z-index: 1000;
+  
+  text-align: left;
+  white-space: normal;
+  font-size: 13px;
+  line-height: 1.5;
+
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  transition-delay: 0.3s; 
+}
+.tooltip-popup::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+  border-bottom-color: #ffffff;
+}
+.tooltip-popup::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 12px;
+}
+.custom-tooltip-wrapper:hover .tooltip-popup {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }

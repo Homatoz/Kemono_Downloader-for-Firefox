@@ -5,45 +5,46 @@
   <script src="settings.js" defer></script>
 </head>
 <body>
-  <p class="main" data-l10n-id="options_download_options">Download Options</p>
+  <label id="lblDlOptions" class="main" data-l10n-id="options_download_options">Download Options</label>
   <div class="sub">
-    <label for="cbDlText">
+    <label id="lblDlText" for="cbDlText">
       <input type="checkbox" id="cbDlText" name="cbDlText" >
       <span data-l10n-id="options_download_text">Download text</span>
-    </label><br>
-    <label for ="cbDlImages">
+    </label>
+    <label id="lblDlImages" for ="cbDlImages">
       <input type="checkbox" id="cbDlImages" name="cbDlImages">
       <span data-l10n-id="options_download_images">Download images</span>
-    </label><br>
-    <label for="cbDlAttachments">
+    </label>
+    <label id="lblDlAttachment" for="cbDlAttachments">
       <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
       <span data-l10n-id="options_download_attachments">Download attachments</span>
-    </label><br>
-    <label for="cbRemoveDupByUrl">
+    </label>
+    <label id="lblRemoveDupByUrl" for="cbRemoveDupByUrl">
       <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
       <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
-    </label><br>
-    <label for="cbRemoveDupByName">
+    </label>
+    <label id="lblRemoveDupByName" for="cbRemoveDupByName">
       <input type="checkbox" id="cbRemoveDupByName" name="cbRemoveDupByName">
-      <span data-l10n-id="options_remove_duplicates_by_name">Remove duplicates by name</span> <span style="color: red;" data-l10n-id="warning_remove_duplicates_by_name">(Use with caution)</span>
+      <span data-l10n-id="options_remove_duplicates_by_name">Remove duplicates by name</span>
     </label>
   </div>
 
-  <br>
-  <p class="main" data-l10n-id="options_macro_body">Rename Macro (Body)</p>
-  <input type="text" id="txtMacroText" size="60">
+  <hr class="separator">
 
-  <p class="main" data-l10n-id="options_macro_image">Rename Macro (Image)</p>
-  <input type="text" id="txtMacroImages" size="60">
+  <label id="lblMacroText" class="main" data-l10n-id="options_macro_body">Rename Macro (Body)</label>
+  <input class="macro" type="text" id="txtMacroText" size="60">
+  <label id="lblMacroImages" class="main" data-l10n-id="options_macro_image">Rename Macro (Image)</label>
+  <input class="macro" type="text" id="txtMacroImages" size="60">
+  <label id="lblMacroAttachments" class="main" data-l10n-id="options_macro_attachment">Rename Macro (Attachment)</label>
+  <input class="macro" type="text" id="txtMacroAttachments" size="60">
 
-  <p class="main" data-l10n-id="options_macro_attachment">Rename Macro (Attachment)</p>
-  <input type="text" id="txtMacroAttachments" size="60">
+  <hr class="separator">
 
-  <p>
-    <button id="reset" data-l10n-id="options_reset_button">Reset to default settings</button>
-  </p>
-  <div class="main" data-l10n-id="options_macro_list">List of macros</div>
-  <div data-l10n-id="options_macro_help">To copy a macro, click the icon to the left of it.</div>
+  <button id="reset" data-l10n-id="options_reset_button">Reset to default settings</button>
+
+  <hr class="separator">
+
+  <label id="lblMacroList" class="main" data-l10n-id="options_macro_table">List of macros</label>
   <table class="macrolist">
     <thead>
       <tr class="list-t">
