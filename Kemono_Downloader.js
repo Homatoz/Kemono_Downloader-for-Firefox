@@ -91,7 +91,6 @@ function collectContent(type) {
   const items = document.querySelectorAll(selector);
 
   const seenUrls = new Set();
-  const seenNames = new Set();
   let validIndex = 1;
 
   return Array.from(items).reduce((acc, item) => {
@@ -139,11 +138,7 @@ function collectContent(type) {
       finalNameOnly = rawFileName.substring(0, lastDotIndex);
     }
 
-    // Check and add FULL filename, not part
-    if (cbRemoveDupByName && seenNames.has(rawFileName)) return acc;
-
     if (cbRemoveDupByUrl) seenUrls.add(urlPart);
-    if (cbRemoveDupByName) seenNames.add(rawFileName);
 
     acc.push({
       index: validIndex++,
@@ -258,7 +253,6 @@ async function main(str) {
   globalThis.txtMacroImages = str.txtMacroImages;
   globalThis.txtMacroAttachments = str.txtMacroAttachments;
   globalThis.cbRemoveDupByUrl = str.cbRemoveDupByUrl;
-  globalThis.cbRemoveDupByName = str.cbRemoveDupByName;
 
   if (str.cbDlText == true) {
     dlText(); // dlText는 동기적으로 메시지를 보내므로 await 불필요
@@ -273,7 +267,7 @@ async function main(str) {
 
 chrome.runtime.onMessage.addListener(function (request, sender) {
   chrome.storage.local.get(
-    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl", "cbRemoveDupByName"],
+    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl"],
     function (str) {
       if (str.txtMacroText == undefined) {
         const version = browser.runtime.getManifest().version;

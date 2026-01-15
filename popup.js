@@ -17,18 +17,6 @@ function localizeHtmlPage() {
 
 localizeHtmlPage();
 
-const specialId = 'cbRemoveDupByName'; //This checkbox cannot be enabled from the popup page.
-
-// Checkbox accessibility
-function updateState(isActive) {
-  const cb = document.getElementById(specialId);
-  if (cb) {
-    //If the checkbox is not selected, then make it inactive.
-    cb.disabled = !isActive;
-    cb.parentElement.style.opacity = isActive ? '1' : '0.5';
-  }
-}
-
 // When page opened, data is loaded from storage in checkbox
 chrome.storage.local.get(null, (data) => {
   document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -36,17 +24,12 @@ chrome.storage.local.get(null, (data) => {
       cb.checked = data[cb.id];
     }
   });
-  updateState(data[specialId]);
 });
 
 // Autosave for checkboxes
 document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
   cb.addEventListener('change', () => {
     chrome.storage.local.set({ [cb.id]: cb.checked });
-    
-    if (cb.id === specialId && !cb.checked) {
-      updateState(false);
-    }
   });
 });
 
@@ -57,10 +40,6 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
       const el = document.getElementById(key);
       if (el && el.type === 'checkbox') {
         el.checked = newValue;
-        
-        if (key === specialId) {
-          updateState(newValue);
-        }
       }
     }
   }

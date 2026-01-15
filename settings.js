@@ -43,10 +43,6 @@ const tooltipRegistry = {
     info: "help_remove_duplicates_by_url",
     containerClass: "field-header-cb"
   },
-  "lblRemoveDupByName": {
-    info: "warning_remove_duplicates_by_name",
-    containerClass: "field-header-cb"
-  },
   "lblMacroText": {
     info: "help_macro_body",
     warning: "warning_save_problems",
@@ -90,7 +86,6 @@ function save_settings() {
   var cbDlImages = document.getElementById("cbDlImages").checked;
   var cbDlAttachments = document.getElementById("cbDlAttachments").checked;
   var cbRemoveDupByUrl = document.getElementById("cbRemoveDupByUrl").checked;
-  var cbRemoveDupByName = document.getElementById("cbRemoveDupByName").checked;
   var txtMacroText = document.getElementById("txtMacroText").value;
   var txtMacroImages = document.getElementById("txtMacroImages").value;
   var txtMacroAttachments = document.getElementById("txtMacroAttachments").value;
@@ -101,7 +96,6 @@ function save_settings() {
       cbDlImages: cbDlImages,
       cbDlAttachments: cbDlAttachments,
       cbRemoveDupByUrl: cbRemoveDupByUrl,
-      cbRemoveDupByName: cbRemoveDupByName,
       txtMacroText: txtMacroText,
       txtMacroImages: txtMacroImages,
       txtMacroAttachments: txtMacroAttachments,
@@ -114,13 +108,12 @@ function save_settings() {
 
 function load_settings() {
   chrome.storage.local.get(
-    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl", "cbRemoveDupByName"],
+    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl"],
     function (load) {
       document.getElementById("cbDlText").checked = load.cbDlText;
       document.getElementById("cbDlImages").checked = load.cbDlImages;
       document.getElementById("cbDlAttachments").checked = load.cbDlAttachments;
       document.getElementById("cbRemoveDupByUrl").checked = load.cbRemoveDupByUrl;
-      document.getElementById("cbRemoveDupByName").checked = load.cbRemoveDupByName;
       document.getElementById("txtMacroText").value = load.txtMacroText;
       document.getElementById("txtMacroImages").value = load.txtMacroImages;
       document.getElementById("txtMacroAttachments").value = load.txtMacroAttachments;
@@ -146,7 +139,6 @@ function initialize_settings() {
   document.getElementById("cbDlImages").checked = true;
   document.getElementById("cbDlAttachments").checked = true;
   document.getElementById("cbRemoveDupByUrl").checked = true;
-  document.getElementById("cbRemoveDupByName").checked = false;
   document.getElementById("txtMacroText").value =
     "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/__main__text__";
   document.getElementById("txtMacroImages").value =
@@ -167,16 +159,6 @@ document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
   cb.addEventListener('change', (e) => {
     chrome.storage.local.set({ [cb.id]: cb.checked });
   });
-});
-
-// Prevent the "Remove duplicates by name" checkbox from being enabled without confirmation.
-document.getElementById('cbRemoveDupByName').addEventListener('click', function(event) {
-  if (this.checked) {
-    const confirmText = chrome.i18n.getMessage("confirm_remove_dupes_by_name");
-    if (!confirm(confirmText)) {
-      event.preventDefault();
-    }
-  }
 });
 
 // Save and Cancel buttons for inputs
