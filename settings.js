@@ -1,3 +1,18 @@
+// Settings for searching for incorrect macros.
+// The list of allowed macros is stored as a regexp.
+// Standard: These are macros allowed in all input fields.
+// Rules: These are macros available for input fields with specific IDs.
+//        They are combined with the standard list. If the value is empty,
+//        only standard macros can be used for this input field.
+const MACRO_CONFIG = {
+  standard: 'PlatformName|UserName|UserID|Title|PageID|ImagesCount|AttsCount|N?(YYYY|YY|MM|DD|hh|mm)',
+  rules: {
+    'txtMacroText': '',
+    'txtMacroImages': 'ImageCounter|ImageCounter#\\d+|ImageName',
+    'txtMacroAttachments': 'AttCounter|AttCounter#\\d+|AttName'
+  }
+};
+
 function localizeHtmlPage() {
   // data-l10n-id 속성을 가진 모든 요소를 찾습니다.
   const localizableElements = document.querySelectorAll('[data-l10n-id]');
@@ -129,9 +144,9 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     const rawValue = input.value;
     const cleanValue = sanitizeMacroPath(rawValue);
 
-    if (rawValue.trim() !== cleanValue) {
-      input.value = cleanValue; // The clear path is displayed in the field.
+    input.value = cleanValue; // The clear path is displayed in the field.
 
+    if (rawValue !== cleanValue) {
       if (typeof browser !== 'undefined' && browser.notifications) {
         browser.notifications.create({
           "type": "basic",
@@ -144,8 +159,38 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
       }
     }
 
+    // Macro checking. The first invalid macro is found, enclosed in [>][<], and highlighted in the input field. Saving is canceled.
+    const errorPath = findFirstError(cleanValue, input.id);
+
+    if (errorPath) {
+      input.value = errorPath;
+
+      // "Bad" visual effects.
+      input.style.transition = 'background-color 0.4s ease, box-shadow 0.4s ease';
+      input.style.backgroundColor = '#f8d7da';
+      input.style.boxShadow = 'inset 0 0 0 1px #dc3545';
+
+      const startIdx = errorPath.indexOf('[>]');
+      const endIdx = errorPath.indexOf('[<]') + 3;
+
+      input.focus();
+      setTimeout(() => {
+        input.setSelectionRange(startIdx, endIdx);
+        // NEED FIX: Scrolling the field to display the selected fragment. Other options didn't work. Need a test. Or maybe not. :-)
+        const charWidth = 6;
+        input.scrollLeft = startIdx * charWidth;
+      }, 10);
+
+      setTimeout(() => {
+        input.style.backgroundColor = '';
+        input.style.outline = '';
+      }, 1500);
+
+      return;
+    }
+
     chrome.storage.local.set({ [input.id]: cleanValue }, () => {
-      // Some visual effects.
+      // "Good" visual effects.
       const originalBg = input.style.backgroundColor;
       const originalShadow = input.style.boxShadow;
 
@@ -195,6 +240,35 @@ function sanitizeMacroPath(inputPath) {
         .replace(/[:*?"<>|]/g, '_');
 
     return cleanPath || 'default_filename.txt';
+}
+
+function findFirstError(path, inputId) {
+  const dollarCount = (path.match(/\$/g) || []).length;
+  const specificMacros = MACRO_CONFIG.rules[inputId] || '';
+  const combinedPattern = specificMacros
+    ? `^(${MACRO_CONFIG.standard}|${specificMacros})$`
+    : `^(${MACRO_CONFIG.standard})$`;
+  const macroRegex = new RegExp(combinedPattern);
+
+  let firstErrorPath = null;
+
+  // Find the first pair $...$ that does not pass validation.
+  path.replace(/\$([^$]*)\$/g, (match, content, offset) => {
+    if (firstErrorPath) return match;
+
+    if (content === "" || !macroRegex.test(content)) {
+      // The following string is formed: text_BEFORE + [>]$error$[<] + text_AFTER
+      firstErrorPath = path.substring(0, offset) + `[>]${match}[<]` + path.substring(offset + match.length);
+    }
+    return match;
+  });
+
+  // If the macros in pairs are ok, but there is an odd number of $ signs, surround the last $ with [>][<],
+  if (!firstErrorPath && dollarCount % 2 !== 0) {
+    const lastDollarIdx = path.lastIndexOf('$');
+    firstErrorPath = path.substring(0, lastDollarIdx) + "[>]$[<]" + path.substring(lastDollarIdx + 1);
+  }
+  return firstErrorPath;
 }
 
 // Listener for changes in the storage for real-time synchronization
