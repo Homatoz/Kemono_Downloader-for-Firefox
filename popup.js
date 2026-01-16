@@ -15,7 +15,12 @@ function localizeHtmlPage() {
   });
 }
 
-localizeHtmlPage();
+document.addEventListener('DOMContentLoaded', () => {
+  localizeHtmlPage();
+  const settingsBtn = document.getElementById('open-settings');
+  // Устанавливаем title из messages.json
+  settingsBtn.title = chrome.i18n.getMessage("button_open_settings");
+});
 
 // When page opened, data is loaded from storage in checkbox
 chrome.storage.local.get(null, (data) => {

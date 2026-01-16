@@ -39,7 +39,7 @@
   "macro_desc_hour": { "message": "Hour" },
   "macro_desc_minute": { "message": "Minute" },
   "alert_first_run": { "message": "kemono-downloader Ver $1:\nThis is the first launch after the version update.\nThe default settings are used.\nPlease check and adjust them if necessary." },
-  "popup_info_text": { "message": "Enabling \"Remove duplicates by name\" and changing file saving paths are available on the main settings page." },
+  "popup_info_text": { "message": "Changing save paths is available on the main settings page." },
   "button_open_settings": { "message": "Open Settings" },
   "notify_path_cleaned_title": { "message": "The path has been changed" },
   "notify_path_cleaned_message": { "message": "Invalid characters removed. Final path: $1"},

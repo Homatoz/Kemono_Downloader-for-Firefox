@@ -6,28 +6,28 @@
   <script src="popup.js" defer></script>
 </head>
 <body>
-  <div class="sub">
-    <div class="item">
-      <input type="checkbox" id="cbDlText" name="cbDlText">
-      <label for="cbDlText" data-l10n-id="options_download_text">Download text</label>
-    </div>
-    <div class="item">
-      <input type="checkbox" id="cbDlImages" name="cbDlImages">
-      <label for="cbDlImages" data-l10n-id="options_download_images">Download images</label>
-    </div>
-    <div class="item">
-      <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
-      <label for="cbDlAttachments" data-l10n-id="options_download_attachments">Download attachments</label>
-    </div>
-    <div class="item">
-      <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
-      <label for="cbRemoveDupByUrl" data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</label>
-    </div>
+  <div class="header-row">
+    <span data-l10n-id="popup_info_text" class="tips">Changing file saving paths is available on the main settings page.</span>
+    <button id="open-settings">⚙️</button>
   </div>
   <hr class="separator">
-  <span data-l10n-id="popup_info_text" class="tips">Enabling "Remove duplicates by name" and changing file saving paths are available on the main settings page.</span>
-  <button id="open-settings">
-    ⚙️ <span data-l10n-id="button_open_settings">Open Settings</span>
-  </button>
+  <div class="sub">
+    <label class="item-label">
+      <input type="checkbox" id="cbDlText" name="cbDlText">
+      <span data-l10n-id="options_download_text">Download text</span>
+    </label>
+    <label class="item-label">
+      <input type="checkbox" id="cbDlImages" name="cbDlImages">
+      <span data-l10n-id="options_download_images">Download images</span>
+    </label>
+    <label class="item-label">
+      <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
+      <span data-l10n-id="options_download_attachments">Download attachments</span>
+    </label>
+    <label class="item-label">
+      <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
+      <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
+    </label>
+  </div>
 </body>
 </html>

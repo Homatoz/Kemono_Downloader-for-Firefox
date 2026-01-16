@@ -229,7 +229,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
       setTimeout(() => {
         input.style.backgroundColor = '';
         input.style.outline = '';
-      }, 1500);
+      }, 1000);
 
       return;
     }
@@ -249,7 +249,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
       setTimeout(() => {
         input.style.backgroundColor = originalBg;
         input.style.boxShadow = originalShadow;
-      }, 1000);
+      }, 500);
     });
   });
 
