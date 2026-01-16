@@ -156,7 +156,7 @@ function dlText() {
   const text = container ? container.innerText.trim() : null
   if (text) {
     const blob2 = new Blob([text], { type: "text/plain" });
-    filename = convertMacrosInPath(txtMacroText) + ".txt";
+    filename = convertMacrosInPath(txtBasePath + "/" + txtTextPath) + ".txt";
 
     if (isChromium() == true) {
       const blob3 = URL.createObjectURL(blob2);
@@ -190,12 +190,12 @@ async function dlContent(type) {
 
 function getSavePathAndName(type, item) {
   const config = {
-    'image': { macro: txtMacroImages, prefix: 'Image' },
-    'attachment': { macro: txtMacroAttachments, prefix: 'Att' }
+    'image': { path: txtImagesPath, prefix: 'Image' },
+    'attachment': { path: txtAttachmentsPath, prefix: 'Att' }
   };
 
-  const { macro, prefix } = config[type];
-  let query = convertMacrosInPath(macro);
+  const { path, prefix } = config[type];
+  let query = convertMacrosInPath(txtBasePath + "/" + path);
 
   // Search $PrefixCounter$ or $PrefixCounter#X$
   const counterRegex = new RegExp(`\\$${prefix}Counter(?:#(\\d+))?\\$`, 'g');
@@ -249,9 +249,10 @@ function isChromium() {
 
 // Main functions
 async function main(str) {
-  globalThis.txtMacroText = str.txtMacroText;
-  globalThis.txtMacroImages = str.txtMacroImages;
-  globalThis.txtMacroAttachments = str.txtMacroAttachments;
+  globalThis.txtBasePath = str.txtBasePath;
+  globalThis.txtTextPath = str.txtTextPath;
+  globalThis.txtImagesPath = str.txtImagesPath;
+  globalThis.txtAttachmentsPath = str.txtAttachmentsPath;
   globalThis.cbRemoveDupByUrl = str.cbRemoveDupByUrl;
 
   if (str.cbDlText == true) {
@@ -267,9 +268,9 @@ async function main(str) {
 
 chrome.runtime.onMessage.addListener(function (request, sender) {
   chrome.storage.local.get(
-    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl"],
+    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtBasePath", "txtTextPath", "txtImagesPath", "txtAttachmentsPath", "cbRemoveDupByUrl"],
     function (str) {
-      if (str.txtMacroText == undefined) {
+      if (str.txtBasePath == undefined) {
         const version = browser.runtime.getManifest().version;
         const message = browser.i18n.getMessage("alert_first_run", [version]);
         alert(message);

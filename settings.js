@@ -1,3 +1,11 @@
+// Setting for default paths.
+const PATH_CONFIG = {
+  txtBasePath: 'Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$',
+  txtTextPath: '__main__text__',
+  txtImagesPath: '$ImageCounter#3$',
+  txtAttachmentsPath: '$AttName$'
+}
+
 // Settings for searching for incorrect macros.
 // The list of allowed macros is stored as a regexp.
 // Standard: These are macros allowed in all input fields.
@@ -7,9 +15,10 @@
 const MACRO_CONFIG = {
   standard: 'PlatformName|UserName|UserID|Title|PageID|ImagesCount|AttsCount|N?(YYYY|YY|MM|DD|hh|mm)',
   rules: {
-    'txtMacroText': '',
-    'txtMacroImages': 'ImageCounter|ImageCounter#\\d+|ImageName',
-    'txtMacroAttachments': 'AttCounter|AttCounter#\\d+|AttName'
+    'txtBasePath': '',
+    'txtTextPath': '',
+    'txtImagesPath': 'ImageCounter|ImageCounter#\\d+|ImageName',
+    'txtAttachmentsPath': 'AttCounter|AttCounter#\\d+|AttName'
   }
 };
 
@@ -43,18 +52,23 @@ const tooltipRegistry = {
     info: "help_remove_duplicates_by_url",
     containerClass: "field-header-cb"
   },
-  "lblMacroText": {
-    info: "help_macro_body",
+  "lblBasePath": {
+    info: "help_base_path",
     warning: "warning_save_problems",
     containerClass: "field-header-txt"
   },
-  "lblMacroImages": {
-    info: "help_macro_image",
+  "lblTextPath": {
+    info: "help_text_path",
     warning: "warning_save_problems",
     containerClass: "field-header-txt"
   },
-  "lblMacroAttachments": {
-    info: "help_macro_attachment",
+  "lblImagesPath": {
+    info: "help_images_path",
+    warning: "warning_save_problems",
+    containerClass: "field-header-txt"
+  },
+  "lblAttachmentsPath": {
+    info: "help_attachments_path",
     warning: "warning_save_problems",
     containerClass: "field-header-txt"
   },
@@ -86,9 +100,10 @@ function save_settings() {
   var cbDlImages = document.getElementById("cbDlImages").checked;
   var cbDlAttachments = document.getElementById("cbDlAttachments").checked;
   var cbRemoveDupByUrl = document.getElementById("cbRemoveDupByUrl").checked;
-  var txtMacroText = document.getElementById("txtMacroText").value;
-  var txtMacroImages = document.getElementById("txtMacroImages").value;
-  var txtMacroAttachments = document.getElementById("txtMacroAttachments").value;
+  var txtBasePath = document.getElementById("txtBasePath").value;
+  var txtTextPath = document.getElementById("txtTextPath").value;
+  var txtImagesPath = document.getElementById("txtImagesPath").value;
+  var txtAttachmentsPath = document.getElementById("txtAttachmentsPath").value;
 
   chrome.storage.local.set(
     {
@@ -96,9 +111,10 @@ function save_settings() {
       cbDlImages: cbDlImages,
       cbDlAttachments: cbDlAttachments,
       cbRemoveDupByUrl: cbRemoveDupByUrl,
-      txtMacroText: txtMacroText,
-      txtMacroImages: txtMacroImages,
-      txtMacroAttachments: txtMacroAttachments,
+      txtBasePath: txtBasePath,
+      txtTextPath: txtTextPath,
+      txtImagesPath: txtImagesPath,
+      txtAttachmentsPath: txtAttachmentsPath,
     },
     function () {
       console.log("Done: save_settings()");
@@ -108,16 +124,17 @@ function save_settings() {
 
 function load_settings() {
   chrome.storage.local.get(
-    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtMacroText", "txtMacroImages", "txtMacroAttachments", "cbRemoveDupByUrl"],
+    ["cbDlText", "cbDlImages", "cbDlAttachments", "txtBasePath", "txtTextPath", "txtImagesPath", "txtAttachmentsPath", "cbRemoveDupByUrl"],
     function (load) {
       document.getElementById("cbDlText").checked = load.cbDlText;
       document.getElementById("cbDlImages").checked = load.cbDlImages;
       document.getElementById("cbDlAttachments").checked = load.cbDlAttachments;
       document.getElementById("cbRemoveDupByUrl").checked = load.cbRemoveDupByUrl;
-      document.getElementById("txtMacroText").value = load.txtMacroText;
-      document.getElementById("txtMacroImages").value = load.txtMacroImages;
-      document.getElementById("txtMacroAttachments").value = load.txtMacroAttachments;
-      if (load.txtMacroText == undefined) {
+      document.getElementById("txtBasePath").value = load.txtBasePath;
+      document.getElementById("txtTextPath").value = load.txtTextPath;
+      document.getElementById("txtImagesPath").value = load.txtImagesPath;
+      document.getElementById("txtAttachmentsPath").value = load.txtAttachmentsPath;
+      if (load.txtBasePath == undefined) {
         initialize_settings();
         console.log("Initializing Settings");
         return null;
@@ -139,12 +156,10 @@ function initialize_settings() {
   document.getElementById("cbDlImages").checked = true;
   document.getElementById("cbDlAttachments").checked = true;
   document.getElementById("cbRemoveDupByUrl").checked = true;
-  document.getElementById("txtMacroText").value =
-    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/__main__text__";
-  document.getElementById("txtMacroImages").value =
-    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$ImageCounter#3$";
-  document.getElementById("txtMacroAttachments").value =
-    "Kemono_Downloader/$PlatformName$/$UserName$/$YY$$MM$$DD$_$Title$/$AttName$";
+  document.getElementById("txtBasePath").value = PATH_CONFIG.txtBasePath;
+  document.getElementById("txtTextPath").value = PATH_CONFIG.txtTextPath;
+  document.getElementById("txtImagesPath").value = PATH_CONFIG.txtImagesPath;
+  document.getElementById("txtAttachmentsPath").value = PATH_CONFIG.txtAttachmentsPath;
   save_settings();
   // Hide warning icons when the reset to defaults button is pressed.
   for (const [id, config] of Object.entries(tooltipRegistry)) {
@@ -185,7 +200,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
   const btnSave = createBtn('💾', () => {
     // Before saving, the path is cleared and a notification is displayed if the path has changed.
     const rawValue = input.value;
-    const cleanValue = sanitizeMacroPath(rawValue);
+    const cleanValue = sanitizeMacroPath(input);
 
     input.value = cleanValue; // The clear path is displayed in the field.
 
@@ -274,10 +289,10 @@ function createBtn(icon, onClick) {
   return btn;
 }
 
-function sanitizeMacroPath(inputPath) {
+function sanitizeMacroPath(input) {
     const reservedNames = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i;
 
-    const cleanPath = inputPath
+    const cleanPath = input.value
         .replace(/^[a-z]+:\/+/i, '')
         .replace(/\\/g, '/')
         .split('/')
@@ -288,7 +303,7 @@ function sanitizeMacroPath(inputPath) {
         .join('/')
         .replace(/[:*?"<>|]/g, '_');
 
-    return cleanPath || 'default_filename.txt';
+    return cleanPath || PATH_CONFIG[input.id] || 'default_filename.txt';
 }
 
 function findFirstError(path, inputId) {
