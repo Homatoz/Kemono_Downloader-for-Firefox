@@ -1,4 +1,5 @@
 {
+  "context_menu_save_page": { "message": "Сохранить страницу" },
   "options_download_options": { "message": "Настройки скачивания" },
   "options_download_text": { "message": "Скачивать текст" },
   "options_download_images": { "message": "Скачивать изображения" },

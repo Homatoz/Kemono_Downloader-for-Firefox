@@ -1,4 +1,5 @@
 {
+  "context_menu_save_page": { "message": "ページを保存" },
   "options_download_options": { "message": "ダウンロードオプション" },
   "options_download_text": { "message": "Download text" },
   "options_download_images": { "message": "画像をダウンロード" },

@@ -1,4 +1,5 @@
 {
+  "context_menu_save_page": { "message": "Save page" },
   "options_download_options": { "message": "Download Options" },
   "options_download_text": { "message": "Download text" },
   "options_download_images": { "message": "Download images" },

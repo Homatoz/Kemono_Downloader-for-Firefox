@@ -1,17 +1,12 @@
 //コンテキスト表示
 chrome.contextMenus.create({
   id: "kemo",
-  title: "해당 페이지를 저장",
+  title: chrome.i18n.getMessage("context_menu_save_page"),
   type: "normal",
   contexts: ["page"],
   documentUrlPatterns: [
-    "https://kemono.cr/*/post/*",
-    "https://kemono.cr/*/post/*",
-  ],
-  /*,
-    'onclick' : function(info){
-      chrome.extention.sendMessage({type: 'get'});
-    }*/
+    "https://kemono.cr/*/post/*"
+  ]
 });
 
 //選択時のイベント

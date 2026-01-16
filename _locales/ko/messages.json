@@ -1,4 +1,5 @@
 {
+  "context_menu_save_page": { "message": "해당 페이지를 저장" },
   "options_download_options": { "message": "다운로드 옵션" },
   "options_download_text": { "message": "Download text" },
   "options_download_images": { "message": "이미지 다운로드 여부" },
