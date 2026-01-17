@@ -23,7 +23,7 @@
   "macro_desc_user_name": { "message": "Name of the user" },
   "macro_desc_user_id": { "message": "User ID" },
   "macro_desc_page_id": { "message": "Page ID" },
-  "macro_desc_title": { "message": "Post title" },
+  "macro_desc_title": { "message": "Post title\nLong title is truncated to 100 characters" },
   "macro_desc_img_total": { "message": "Total number of images" },
   "macro_desc_img_number": { "message": "Image number without leading zeros" },
   "macro_desc_img_number_x": { "message": "Image number with leading zeros\nReplace X with the desired number of digits" },

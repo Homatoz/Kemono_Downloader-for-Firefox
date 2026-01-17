@@ -22,7 +22,11 @@ function getPageID() {
 
 function getTitle() {
   let title = document.querySelector(".post__title span:first-child").textContent;
-  return sanitizeText(title);
+  title = sanitizeText(title);
+  if (title.length > 100) {
+    title = title.slice(0, 100) + "(···)";
+  }
+  return title;
 }
 
 function getImagesCount() {
@@ -38,7 +42,7 @@ function sanitizeText(text, includeDot = true) {
 
   text = text.normalize('NFKC');
 
-  text = text.replace(/[\u200b\ufeff]/g, '');
+  text = text.replace(/[\u200B-\u200D\uFEFF\uFE0F]/g, '');
 
   text = text.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
 

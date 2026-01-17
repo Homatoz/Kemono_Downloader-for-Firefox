@@ -23,7 +23,7 @@
   "macro_desc_user_name": { "message": "Имя пользователя" },
   "macro_desc_user_id": { "message": "ID пользователя" },
   "macro_desc_page_id": { "message": "ID страницы" },
-  "macro_desc_title": { "message": "Заголовок публикации" },
+  "macro_desc_title": { "message": "Заголовок публикации\nДлинный заголовок обрезается до 100 символов" },
   "macro_desc_img_total": { "message": "Общее количество изображений" },
   "macro_desc_img_number": { "message": "Номер изображения без ведущих нулей" },
   "macro_desc_img_number_x": { "message": "Номер изображения с ведущими нулями\nЗамените X на нужное количество цифр" },
