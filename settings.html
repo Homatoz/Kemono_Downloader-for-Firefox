@@ -1,215 +1,253 @@
+<!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" type="text/css" href="settings.css">
   <script src="settings.js" defer></script>
 </head>
+
 <body>
-  <label id="lblDlOptions" class="main" data-l10n-id="options_download_options">Download Options</label>
-  <div class="sub">
-    <label id="lblDlText" for="cbDlText">
-      <input type="checkbox" id="cbDlText" name="cbDlText" >
-      <span data-l10n-id="options_download_text">Download text</span>
-    </label>
-    <label id="lblDlImages" for ="cbDlImages">
-      <input type="checkbox" id="cbDlImages" name="cbDlImages">
-      <span data-l10n-id="options_download_images">Download images</span>
-    </label>
-    <label id="lblDlAttachment" for="cbDlAttachments">
-      <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
-      <span data-l10n-id="options_download_attachments">Download attachments</span>
-    </label>
-    <label id="lblRemoveDupByUrl" for="cbRemoveDupByUrl">
-      <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
-      <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
-    </label>
+  <div class="container">
+
+    <!-- 1. 다운로드 옵션 -->
+    <section class="card">
+      <h2 id="lblDlOptions" data-l10n-id="options_download_options">Download Options</h2>
+      <div class="checkbox-group">
+        <label id="lblDlText" class="checkbox-item" for="cbDlText">
+          <input type="checkbox" id="cbDlText" name="cbDlText">
+          <span class="checkmark"></span>
+          <span data-l10n-id="options_download_text">Download text</span>
+        </label>
+
+        <label id="lblDlImages" class="checkbox-item" for="cbDlImages">
+          <input type="checkbox" id="cbDlImages" name="cbDlImages">
+          <span class="checkmark"></span>
+          <span data-l10n-id="options_download_images">Download images</span>
+        </label>
+
+        <label id="lblDlAttachment" class="checkbox-item" for="cbDlAttachments">
+          <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
+          <span class="checkmark"></span>
+          <span data-l10n-id="options_download_attachments">Download attachments</span>
+        </label>
+
+        <label id="lblRemoveDupByUrl" class="checkbox-item" for="cbRemoveDupByUrl">
+          <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
+          <span class="checkmark"></span>
+          <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 2. 파일명 설정 (Rename Macros) -->
+    <section class="card">
+      <h2 id="lblDlPath" data-l10n-id="options_download_path">Download path</h2>
+
+      <div class="input-group">
+        <label id="lblBasePath" for="txtBasePath" data-l10n-id="options_base_path">Rename Macro (Base)</label>
+        <input class="macro" type="text" id="txtBasePath" placeholder="Enter base path macro...">
+      </div>
+
+      <div class="input-group">
+        <label id="lblTextPath" for="txtTextPath" data-l10n-id="options_text_path">Rename Macro (Text)</label>
+        <input class="macro" type="text" id="txtTextPath" placeholder="Enter text path macro...">
+      </div>
+
+      <div class="input-group">
+        <label id="lblImagesPath" for="txtImagesPath" data-l10n-id="options_images_path">Rename Macro (Image)</label>
+        <input class="macro" type="text" id="txtImagesPath" placeholder="Enter image path macro...">
+      </div>
+
+      <div class="input-group">
+        <label id="lblAttachmentsPath" for="txtAttachmentsPath" data-l10n-id="options_attachments_path">Rename Macro
+          (Attachment)</label>
+        <input class="macro" type="text" id="txtAttachmentsPath" placeholder="Enter attachment path macro...">
+      </div>
+    </section>
+
+    <!-- 3. 액션 버튼 -->
+    <section class="actions">
+      <button id="reset" class="btn danger" data-l10n-id="options_reset_button">Reset to default settings</button>
+    </section>
+
+    <!-- 4. 매크로 설명 테이블 -->
+    <section class="card">
+      <h3 id="lblMacroList" data-l10n-id="options_macro_table">List of macros</h3>
+      <div class="table-container">
+        <table class="macrolist">
+          <thead>
+            <tr class="list-t">
+              <th></th>
+              <th data-l10n-id="macro_table_header_macro">Macro</th>
+              <th data-l10n-id="macro_table_header_description">Description</th>
+            </tr>
+            <tr class="list-t">
+              <th colspan="3" data-l10n-id="macro_table_header_general">General macros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$PlatformName$</td>
+              <td data-l10n-id="macro_desc_platform">Name of the platform</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$UserName$</td>
+              <td data-l10n-id="macro_desc_user_name">Name of the user</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$UserID$</td>
+              <td data-l10n-id="macro_desc_user_id">User ID</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$PageID$</td>
+              <td data-l10n-id="macro_desc_page_id">Page ID</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$Title$</td>
+              <td data-l10n-id="macro_desc_title">Post title</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$ImagesCount$</td>
+              <td data-l10n-id="macro_desc_img_total">Total number of images</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$AttsCount$</td>
+              <td data-l10n-id="macro_desc_att_total">Total number of attachments</td>
+            </tr>
+          </tbody>
+          <thead>
+            <tr class="list-t">
+              <th colspan="3" data-l10n-id="macro_table_header_image">Image macros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$ImageCounter$</td>
+              <td data-l10n-id="macro_desc_img_number">Image number without leading zeros</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$ImageCounter#X$</td>
+              <td data-l10n-id="macro_desc_img_number_X">Image number with leading zeros<br />Replace X with the desired
+                number of digits</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$ImageName$</td>
+              <td data-l10n-id="macro_desc_img_name">Original image name</td>
+            </tr>
+          </tbody>
+          <thead>
+            <tr class="list-t">
+              <th colspan="3" data-l10n-id="macro_table_header_attachment">Attachment macros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$AttCounter$</td>
+              <td data-l10n-id="macro_desc_att_number">Attachment number without leading zeros</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$AttCounter#X$</td>
+              <td data-l10n-id="macro_desc_att_number_X">Image number with leading zeros<br />Replace X with the desired
+                number of digits</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$AttName$</td>
+              <td data-l10n-id="macro_desc_att_name">Original attachment name</td>
+            </tr>
+          </tbody>
+
+          <!-- 시간 매크로 예시 -->
+          <thead>
+            <tr class="list-t">
+              <th colspan="3" data-l10n-id="macro_table_header_publication_time">Publication time macros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$YYYY$</td>
+              <td data-l10n-id="macro_desc_year">Year</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$YY$</td>
+              <td data-l10n-id="macro_desc_year_short">Year (short)</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$MM$</td>
+              <td data-l10n-id="macro_desc_month">Month</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$DD$</td>
+              <td data-l10n-id="macro_desc_day">Day</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$hh$</td>
+              <td data-l10n-id="macro_desc_hour">Hour</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$mm$</td>
+              <td data-l10n-id="macro_desc_minute">Minute</td>
+            </tr>
+          </tbody>
+          <thead>
+            <tr class="list-t">
+              <th colspan="3" data-l10n-id="macro_table_header_current_time">Current time macros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$NYYYY$</td>
+              <td data-l10n-id="macro_desc_year">Year</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$NYY$</td>
+              <td data-l10n-id="macro_desc_year_short">Year (short)</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$NMM$</td>
+              <td data-l10n-id="macro_desc_month">Month</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$NDD$</td>
+              <td data-l10n-id="macro_desc_day">Day</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$Nhh$</td>
+              <td data-l10n-id="macro_desc_hour">Hour</td>
+            </tr>
+            <tr>
+              <td><button class="copy-btn">📋</button></td>
+              <td>$Nmm$</td>
+              <td data-l10n-id="macro_desc_minute">Minute</td>
+        </table>
+      </div>
+    </section>
   </div>
+</body>
 
-  <hr class="separator">
-
-  <label id="lblDlPath" class="main" data-l10n-id="options_download_path">Download path</label>
-  <label id="lblBasePath" class="main-small" data-l10n-id="options_base_path">Rename Macro (Base)</label>
-  <input class="macro" type="text" id="txtBasePath" size="60">
-  <label id="lblTextPath" class="main-small" data-l10n-id="options_text_path">Rename Macro (Text)</label>
-  <input class="macro" type="text" id="txtTextPath" size="60">
-  <label id="lblImagesPath" class="main-small" data-l10n-id="options_images_path">Rename Macro (Image)</label>
-  <input class="macro" type="text" id="txtImagesPath" size="60">
-  <label id="lblAttachmentsPath" class="main-small" data-l10n-id="options_attachments_path">Rename Macro (Attachment)</label>
-  <input class="macro" type="text" id="txtAttachmentsPath" size="60">
-
-  <hr class="separator">
-
-  <button id="reset" data-l10n-id="options_reset_button">Reset to default settings</button>
-
-  <hr class="separator">
-
-  <label id="lblMacroList" class="main" data-l10n-id="options_macro_table">List of macros</label>
-  <table class="macrolist">
-    <thead>
-      <tr class="list-t">
-        <th></th>
-        <th data-l10n-id="macro_table_header_macro">Macro</th>
-        <th data-l10n-id="macro_table_header_description">Description</th>
-      </tr>
-      <tr class="list-t">
-        <th colspan="3" data-l10n-id="macro_table_header_general">General macros</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$PlatformName$</td>
-        <td data-l10n-id="macro_desc_platform">Name of the platform</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$UserName$</td>
-        <td data-l10n-id="macro_desc_user_name">Name of the user</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$UserID$</td>
-        <td data-l10n-id="macro_desc_user_id">User ID</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$PageID$</td>
-        <td data-l10n-id="macro_desc_page_id">Page ID</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$Title$</td>
-        <td data-l10n-id="macro_desc_title">Post title</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$ImagesCount$</td>
-        <td data-l10n-id="macro_desc_img_total">Total number of images</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$AttsCount$</td>
-        <td data-l10n-id="macro_desc_att_total">Total number of attachments</td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr class="list-t">
-        <th colspan="3" data-l10n-id="macro_table_header_image">Image macros</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$ImageCounter$</td>
-        <td data-l10n-id="macro_desc_img_number">Image number without leading zeros</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$ImageCounter#X$</td>
-        <td data-l10n-id="macro_desc_img_number_X">Image number with leading zeros<br/>Replace X with the desired number of digits</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$ImageName$</td>
-        <td data-l10n-id="macro_desc_img_name">Original image name</td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr class="list-t">
-        <th colspan="3" data-l10n-id="macro_table_header_attachment">Attachment macros</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$AttCounter$</td>
-        <td data-l10n-id="macro_desc_att_number">Attachment number without leading zeros</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$AttCounter#X$</td>
-        <td data-l10n-id="macro_desc_att_number_X">Attachment number with leading zeros<br/>Replace X with the desired number of digits</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$AttName$</td>
-        <td data-l10n-id="macro_desc_att_name">Original attachment name</td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr class="list-t">
-        <th colspan="3" data-l10n-id="macro_table_header_publication_time">Publication time macros</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$YYYY$</td>
-        <td data-l10n-id="macro_desc_year">Year</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$YY$</td>
-        <td data-l10n-id="macro_desc_year_short">Year (short)</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$MM$</td>
-        <td data-l10n-id="macro_desc_month">Month</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$DD$</td>
-        <td data-l10n-id="macro_desc_day">Day</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$hh$</td>
-        <td data-l10n-id="macro_desc_hour">Hour</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$mm$</td>
-        <td data-l10n-id="macro_desc_minute">Minute</td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr class="list-t">
-        <th colspan="3" data-l10n-id="macro_table_header_current_time">Current time macros</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$NYYYY$</td>
-        <td data-l10n-id="macro_desc_year">Year</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$NYY$</td>
-        <td data-l10n-id="macro_desc_year_short">Year (short)</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$NMM$</td>
-        <td data-l10n-id="macro_desc_month">Month</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$NDD$</td>
-        <td data-l10n-id="macro_desc_day">Day</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$Nhh$</td>
-        <td data-l10n-id="macro_desc_hour">Hour</td>
-      </tr>
-      <tr>
-        <td><button class="copy-btn">📋</button></td>
-        <td>$Nmm$</td>
-        <td data-l10n-id="macro_desc_minute">Minute</td>
-      </tr>
-    </tbody>
-  </table>
-  </body>
 </html>

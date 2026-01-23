@@ -268,7 +268,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     });
   });
 
-  const btnReset = createBtn('\u21A9\uFE0E', () => {
+  const btnReset = createBtn('↻', () => {
     toggleWarning(input.id, false);
 
     chrome.storage.local.get(input.id, (res) => {
@@ -282,10 +282,19 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
 function createBtn(icon, onClick) {
   const btn = document.createElement('button');
+  btn.style.fontSize = '20px'; 
   btn.textContent = icon;
   btn.style.cursor = 'pointer';
   btn.style.marginLeft = '1px';
+  btn.style.height = '38px';
+  btn.style.width = '38px'
   btn.onclick = onClick;
+  btn.style.display = 'inline-flex';
+  btn.style.alignItems = 'center';
+  btn.style.justifyContent = 'center';
+  btn.style.cursor = 'pointer';
+  btn.style.padding = '0';
+  btn.style.boxSizing = 'border-box';
   return btn;
 }
 
