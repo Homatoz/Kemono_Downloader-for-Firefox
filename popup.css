@@ -1,0 +1,64 @@
+body {
+    width: 250px;
+    padding: 10px;
+    font-family: sans-serif;
+}
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.tips {
+    flex: 1;
+    font-size: 11px;
+    color: #666;
+    line-height: 1.2;
+}
+.separator {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+#open-settings {
+    cursor: pointer;
+    font-size: 16px;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+#open-settings:hover {
+    background-color: #e8e8e8;
+    border-color: #bbb;
+}
+.sub {
+    display: flex;
+    flex-direction: column; /* Выстраиваем лейблы в колонку */
+    align-items: flex-start; /* Чтобы inline-flex не растягивался на всю ширину */
+}
+.item-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-bottom: 8px; /* Отступ между строками */
+    user-select: none;
+}
+.item-label:last-child {
+    margin-bottom: 0;
+}
+.item-label input[type="checkbox"] {
+    cursor: pointer;
+    margin: 0;
+    flex-shrink: 0;
+}

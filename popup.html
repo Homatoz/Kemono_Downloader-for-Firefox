@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="popup.css">
+  <script src="popup.js" defer></script>
+</head>
+<body>
+  <div class="header-row">
+    <span data-l10n-id="popup_info_text" class="tips">Changing file saving paths is available on the main settings page.</span>
+    <button id="open-settings">⚙️</button>
+  </div>
+  <hr class="separator">
+  <div class="sub">
+    <label class="item-label">
+      <input type="checkbox" id="cbDlText" name="cbDlText">
+      <span data-l10n-id="options_download_text">Download text</span>
+    </label>
+    <label class="item-label">
+      <input type="checkbox" id="cbDlImages" name="cbDlImages">
+      <span data-l10n-id="options_download_images">Download images</span>
+    </label>
+    <label class="item-label">
+      <input type="checkbox" id="cbDlAttachments" name="cbDlAttachments">
+      <span data-l10n-id="options_download_attachments">Download attachments</span>
+    </label>
+    <label class="item-label">
+      <input type="checkbox" id="cbRemoveDupByUrl" name="cbRemoveDupByUrl">
+      <span data-l10n-id="options_remove_duplicates_by_url">Remove duplicates by URL</span>
+    </label>
+  </div>
+</body>
+</html>
